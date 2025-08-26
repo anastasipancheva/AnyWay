@@ -34,11 +34,8 @@ export function Profile({ user }: ProfileProps) {
             {user?.first_name || "Пользователь"}
           </h2>
           <p className="text-sm text-neutral-gray">@{user?.username || "username"}</p>
-          <Badge
-              className="mt-2 bg-[#051F45] !text-white px-3 py-1 rounded-full"
-          >
-            Активный участник
-          </Badge>
+          <Badge className="mt-2 badge-inverse px-3 py-1 rounded-full">Активный участник</Badge>
+
         </div>
 
         {/* Self-Tracking */}
