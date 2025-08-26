@@ -35,7 +35,7 @@ export function Profile({ user }: ProfileProps) {
           </h2>
           <p className="text-sm text-neutral-gray">@{user?.username || "username"}</p>
           <Badge
-              className="mt-2 bg-[#051F45] text-white px-3 py-1 rounded-full"
+              className="mt-2 bg-[#051F45] !text-white px-3 py-1 rounded-full"
           >
             Активный участник
           </Badge>
@@ -95,7 +95,7 @@ export function Profile({ user }: ProfileProps) {
                     <p className="text-xs text-neutral-gray">{achievement.description}</p>
                   </div>
                   {achievement.earned && (
-                      <Badge className="bg-primary text-white">✓</Badge>
+                      <Badge className="bg-primary !text-white">✓</Badge>
                   )}
                 </div>
             ))}
