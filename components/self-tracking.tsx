@@ -236,12 +236,12 @@ export function SelfTracking() {
                 <Stepper step={1} />
                 <StepHeader title="Как прошел день?" />
 
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                <div className="flex gap-3 overflow-x-auto pb-2">
                     {moods.map((mood) => (
                         <button
                             key={mood.id}
                             onClick={() => handleMoodSelect(mood.id)}
-                            className="group flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-[#F6F7FA] transition-all"
+                            className="flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-[#F6F7FA] transition-all flex-shrink-0"
                         >
                             <div
                                 className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${mood.color} flex items-center justify-center text-white text-2xl shadow hover:shadow-md group-hover:scale-105 transition-transform`}
@@ -249,11 +249,12 @@ export function SelfTracking() {
                                 {mood.emoji}
                             </div>
                             <span className="text-xs font-medium text-primary text-[#051F45] opacity-90">
-                {mood.label}
-              </span>
+        {mood.label}
+      </span>
                         </button>
                     ))}
                 </div>
+
             </Shell>
         )
     }

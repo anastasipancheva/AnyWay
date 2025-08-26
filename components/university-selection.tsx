@@ -689,52 +689,54 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
 
   return (
       <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold mb-2" style={{ color: "#051F45" }}>
+            Выберите вуз
+          </h1>
+          <p className="text-sm" style={{ color: "#98A2B3" }}>
+            Найдите олимпиады для поступления
+          </p>
+        </div>
+
         <Input
             type="text"
-            placeholder="Поиск вуза"
+            placeholder="Поиск вуза..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="mb-4"
             style={{ borderColor: "#98A2B3" }}
         />
 
-        {filteredUniversities.map((university) => (
-            <Card
-                key={university.id}
-                className="p-4 mb-4 hover:shadow-md transition-shadow"
-                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">{university.logo}</span>
-                <div>
-                  <h3 className="font-bold" style={{ color: "#051F45" }}>
-                    {university.name}
-                  </h3>
-                  <p className="text-sm" style={{ color: "#98A2B3" }}>
-                    {university.shortName}
-                  </p>
+        <div className="space-y-3">
+          {filteredUniversities.map((university) => (
+              <Card
+                  key={university.id}
+                  className="p-4 hover:shadow-md transition-all cursor-pointer border"
+                  style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+                  onClick={() => setSelectedUniversity(university.id)}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">{university.logo}</div>
+                    <div>
+                      <h3 className="font-semibold text-base" style={{ color: "#051F45" }}>
+                        {university.shortName}
+                      </h3>
+                      <p className="text-sm" style={{ color: "#98A2B3" }}>
+                        {university.name}
+                      </p>
+                      <p className="text-xs mt-1" style={{ color: "#F2C4CD" }}>
+                        {university.directions.length} направлений
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-xl" style={{ color: "#98A2B3" }}>
+                    →
+                  </div>
                 </div>
-              </div>
-
-              <div className="mt-4 space-y-2">
-                {university.directions.map((direction) => (
-                    <Button
-                        key={direction.id}
-                        variant="outline"
-                        onClick={() => setSelectedDirection(direction.id)}
-                        className="w-full hover:shadow-sm transition-shadow"
-                        style={{
-                          borderColor: "#F2C4CD",
-                          color: "#051F45",
-                          backgroundColor: "rgba(242, 196, 205, 0.05)",
-                        }}
-                    >
-                      {direction.name}
-                    </Button>
-                ))}
-              </div>
-            </Card>
-        ))}
+              </Card>
+          ))}
+        </div>
       </div>
   )
 }

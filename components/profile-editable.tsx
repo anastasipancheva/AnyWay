@@ -34,7 +34,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
 
     const achievements = [
         { id: 1, title: "Первые шаги", description: "Выбрали первую олимпиаду", icon: "🎯", earned: true },
-        { id: 2, title: "Планировщик", description: "Добавили 5+ событий в календарь", icon: "���", earned: true },
+        { id: 2, title: "Планировщик", description: "Добавили 5+ событий в календарь", icon: "📅", earned: true },
         { id: 3, title: "Социальная бабочка", description: "Присоединились к 3+ чатам", icon: "💬", earned: false },
         { id: 4, title: "Наставник", description: "Помогли 5+ участникам", icon: "🤝", earned: false },
     ]
