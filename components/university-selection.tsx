@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, Trophy } from "lucide-react"
+import { Calendar, Clock, Trophy, Info } from "lucide-react"
 import { EventModal, type CalendarEvent } from "./event-modal"
 
 interface Direction {
@@ -139,7 +139,7 @@ const universities: University[] = [
       { id: 49, name: "Математика", code: "01.03.01", budgetPlaces: 100, passingScore: 280 },
       { id: 50, name: "Физика", code: "03.03.02", budgetPlaces: 120, passingScore: 275 },
       { id: 51, name: "Информатика и вычислительная техника", code: "09.03.01", budgetPlaces: 150, passingScore: 290 },
-      { id: 52, name: "Программная инженерия", code: "09.03.04", budgetPlaces: 120, passingScore: 300 },
+      { id: 52, name: "Программная инженерия", code: "09.03.04", budgetPlaces: 120, passingScore: 261 },
       { id: 53, name: "Химия", code: "04.03.01", budgetPlaces: 90, passingScore: 270 },
       { id: 54, name: "Биология", code: "06.03.01", budgetPlaces: 110, passingScore: 265 },
       { id: 55, name: "Геология", code: "05.03.01", budgetPlaces: 80, passingScore: 260 },
@@ -499,55 +499,102 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
     const university = universities.find((u) => u.directions.some((d) => d.id === selectedDirection))
 
     return (
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
           <div className="flex items-center gap-2 mb-4">
-            <Button variant="ghost" size="sm" onClick={() => setSelectedDirection(null)} className="text-primary">
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedDirection(null)}
+                style={{ color: "#051F45" }}
+                className="hover:bg-white"
+            >
               ← Назад
             </Button>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg mb-6 border">
+          <div
+              className="p-6 rounded-lg mb-6 border"
+              style={{
+                background: "linear-gradient(135deg, #F2C4CD 0%, #F6F7FA 100%)",
+                borderColor: "#98A2B3",
+              }}
+          >
             <div className="flex items-center gap-3 mb-2">
               <span className="text-2xl">{university?.logo}</span>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">{direction?.name}</h2>
-                <p className="text-sm text-gray-600">{university?.shortName}</p>
+                <h2 className="text-xl font-bold" style={{ color: "#051F45" }}>
+                  {direction?.name}
+                </h2>
+                <p className="text-sm" style={{ color: "#98A2B3" }}>
+                  {university?.shortName}
+                </p>
               </div>
             </div>
             <div className="flex gap-2 mt-3">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                 Бюджет: {direction?.budgetPlaces} мест
               </Badge>
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                 Проходной: {direction?.passingScore}+ баллов
               </Badge>
             </div>
           </div>
 
+          <div className="p-4 rounded-lg mb-4 border" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
+            <div className="flex items-start gap-2">
+              <Info className="h-4 w-4 mt-0.5" style={{ color: "#051F45" }} />
+              <div className="text-sm">
+                <p style={{ color: "#051F45" }} className="font-medium mb-1">
+                  Информация о БВИ (Без вступительных испытаний):
+                </p>
+                <p style={{ color: "#98A2B3" }}>
+                  {university?.shortName === "ТГУ"
+                      ? "В ТГУ любая олимпиада из перечня РСОШ дает право на БВИ при поступлении на соответствующие направления."
+                      : "Любая профильная олимпиада 1 уровня дает БВИ при поступлении на соответствующие направления."}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-yellow-500" />
+            <h3 className="text-lg font-semibold flex items-center gap-2" style={{ color: "#051F45" }}>
+              <Trophy className="h-5 w-5" style={{ color: "#F2C4CD" }} />
               Олимпиады для поступления
             </h3>
 
             {directionOlympiads.map((olympiad) => (
-                <Card key={olympiad.id} className="p-4 hover:shadow-md transition-shadow">
+                <Card
+                    key={olympiad.id}
+                    className="p-4 hover:shadow-md transition-shadow"
+                    style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+                >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-2">{olympiad.name}</h4>
+                        <h4 className="font-semibold mb-2" style={{ color: "#051F45" }}>
+                          {olympiad.name}
+                        </h4>
                         <div className="flex gap-2 mb-2">
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                             {typeof olympiad.level === "number" ? `${olympiad.level} уровень` : olympiad.level}
                           </Badge>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                             {olympiad.subject}
                           </Badge>
-                          <Badge variant={olympiad.type === "БВИ" ? "default" : "secondary"} className="text-xs">
+                          <Badge
+                              variant={olympiad.type === "БВИ" ? "default" : "secondary"}
+                              className="text-xs"
+                              style={{
+                                backgroundColor: olympiad.type === "БВИ" ? "#051F45" : "#98A2B3",
+                                color: "white",
+                              }}
+                          >
                             {olympiad.type}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mb-3">{olympiad.features}</p>
+                        <p className="text-sm mb-3" style={{ color: "#98A2B3" }}>
+                          {olympiad.features}
+                        </p>
                       </div>
                     </div>
 
@@ -556,11 +603,16 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                           variant="outline"
                           size="sm"
                           onClick={() => showEventModal(olympiad, "registration")}
-                          className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+                          className="flex items-center gap-2 hover:bg-blue-50"
+                          style={{
+                            color: "#051F45",
+                            borderColor: "#F2C4CD",
+                            backgroundColor: "rgba(242, 196, 205, 0.1)",
+                          }}
                       >
                         <Calendar className="h-3 w-3" />
                         Регистрация
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs" style={{ color: "#98A2B3" }}>
                       {new Date(olympiad.registration).toLocaleDateString("ru")}
                     </span>
                       </Button>
@@ -569,11 +621,16 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                           variant="outline"
                           size="sm"
                           onClick={() => showEventModal(olympiad, "qualifying")}
-                          className="flex items-center gap-2 text-yellow-600 border-yellow-200 hover:bg-yellow-50"
+                          className="flex items-center gap-2 hover:bg-yellow-50"
+                          style={{
+                            color: "#051F45",
+                            borderColor: "#F2C4CD",
+                            backgroundColor: "rgba(242, 196, 205, 0.1)",
+                          }}
                       >
                         <Clock className="h-3 w-3" />
                         Отборочный
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs" style={{ color: "#98A2B3" }}>
                       {new Date(olympiad.qualifying).toLocaleDateString("ru")}
                     </span>
                       </Button>
@@ -582,11 +639,18 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                           variant="outline"
                           size="sm"
                           onClick={() => showEventModal(olympiad, "final")}
-                          className="flex items-center gap-2 text-green-600 border-green-200 hover:bg-green-50"
+                          className="flex items-center gap-2 hover:bg-green-50"
+                          style={{
+                            color: "#051F45",
+                            borderColor: "#F2C4CD",
+                            backgroundColor: "rgba(242, 196, 205, 0.1)",
+                          }}
                       >
                         <Trophy className="h-3 w-3" />
                         Заключительный
-                        <span className="text-xs text-gray-500">{new Date(olympiad.final).toLocaleDateString("ru")}</span>
+                        <span className="text-xs" style={{ color: "#98A2B3" }}>
+                      {new Date(olympiad.final).toLocaleDateString("ru")}
+                    </span>
                       </Button>
                     </div>
                   </div>
@@ -618,22 +682,31 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
   }
 
   return (
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
         <Input
             type="text"
             placeholder="Поиск вуза"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="mb-4"
+            style={{ borderColor: "#98A2B3" }}
         />
 
         {filteredUniversities.map((university) => (
-            <Card key={university.id} className="p-4 mb-4">
+            <Card
+                key={university.id}
+                className="p-4 mb-4 hover:shadow-md transition-shadow"
+                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+            >
               <div className="flex items-center gap-2">
                 <span className="text-2xl">{university.logo}</span>
                 <div>
-                  <h3 className="font-bold">{university.name}</h3>
-                  <p className="text-sm text-muted-foreground">{university.shortName}</p>
+                  <h3 className="font-bold" style={{ color: "#051F45" }}>
+                    {university.name}
+                  </h3>
+                  <p className="text-sm" style={{ color: "#98A2B3" }}>
+                    {university.shortName}
+                  </p>
                 </div>
               </div>
 
@@ -643,7 +716,12 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                         key={direction.id}
                         variant="outline"
                         onClick={() => setSelectedDirection(direction.id)}
-                        className="w-full"
+                        className="w-full hover:shadow-sm transition-shadow"
+                        style={{
+                          borderColor: "#F2C4CD",
+                          color: "#051F45",
+                          backgroundColor: "rgba(242, 196, 205, 0.05)",
+                        }}
                     >
                       {direction.name}
                     </Button>

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, MapPin, Users } from "lucide-react"
+import { Calendar, Clock, MapPin, Users, CheckCircle } from "lucide-react"
 
 interface EventModalProps {
     isOpen: boolean
@@ -41,6 +41,7 @@ export function EventModal({
                                features,
                            }: EventModalProps) {
     const [isAdding, setIsAdding] = useState(false)
+    const [showSuccess, setShowSuccess] = useState(false)
 
     const getEventTypeInfo = (type: string) => {
         switch (type) {
@@ -96,8 +97,13 @@ export function EventModal({
 
         setTimeout(() => {
             setIsAdding(false)
-            onClose()
+            setShowSuccess(true)
         }, 500)
+
+        setTimeout(() => {
+            setShowSuccess(false)
+            onClose()
+        }, 2000)
     }
 
     const formatDate = (dateStr: string) => {
@@ -111,64 +117,103 @@ export function EventModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md" style={{ backgroundColor: "#F6F7FA" }}>
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <div className={`p-2 rounded-lg ${eventInfo.color} text-white`}>
+                    <DialogTitle className="flex items-center gap-2" style={{ color: "#051F45" }}>
+                        <div className="p-2 rounded-lg text-white" style={{ backgroundColor: "#051F45" }}>
                             <Icon className="h-4 w-4" />
                         </div>
                         Добавить в календарь
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
-                        <h3 className="font-semibold text-gray-900 mb-2">{olympiadName}</h3>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline" className="text-xs">
-                                {typeof level === "number" ? `${level} уровень` : level}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                                {subject}
-                            </Badge>
+                {showSuccess ? (
+                    <div className="space-y-4 text-center py-8">
+                        <div className="flex justify-center">
+                            <CheckCircle className="h-16 w-16" style={{ color: "#051F45" }} />
                         </div>
-                        <div
-                            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-sm ${eventInfo.color}`}
-                        >
-                            <Icon className="h-3 w-3" />
-                            {eventInfo.title}
-                        </div>
-                    </div>
-
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-sm">
-                            <Clock className="h-4 w-4 text-gray-500" />
-                            <div>
-                                <p className="font-medium text-gray-900">{formatDate(date)}</p>
-                                <p className="text-gray-500 text-xs">{eventInfo.description}</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600">
-                                <strong>Особенности:</strong> {features}
+                        <div>
+                            <h3 className="text-lg font-semibold mb-2" style={{ color: "#051F45" }}>
+                                Успешно добавлено в расписание!
+                            </h3>
+                            <p className="text-sm" style={{ color: "#98A2B3" }}>
+                                Событие "{eventInfo.title}" добавлено в ваш календарь
                             </p>
                         </div>
                     </div>
-
-                    <div className="flex gap-3 pt-4">
-                        <Button variant="outline" onClick={onClose} className="flex-1 bg-transparent" disabled={isAdding}>
-                            Отмена
-                        </Button>
-                        <Button
-                            onClick={handleAddToCalendar}
-                            className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
-                            disabled={isAdding}
+                ) : (
+                    <div className="space-y-4">
+                        <div
+                            className="p-4 rounded-lg border"
+                            style={{
+                                background: "linear-gradient(135deg, #F2C4CD 0%, #F6F7FA 100%)",
+                                borderColor: "#98A2B3",
+                            }}
                         >
-                            {isAdding ? "Добавляю..." : "Добавить в расписание"}
-                        </Button>
+                            <h3 className="font-semibold mb-2" style={{ color: "#051F45" }}>
+                                {olympiadName}
+                            </h3>
+                            <div className="flex items-center gap-2 mb-2">
+                                <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
+                                    {typeof level === "number" ? `${level} уровень` : level}
+                                </Badge>
+                                <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
+                                    {subject}
+                                </Badge>
+                            </div>
+                            <div
+                                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-sm"
+                                style={{ backgroundColor: "#051F45" }}
+                            >
+                                <Icon className="h-3 w-3" />
+                                {eventInfo.title}
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3 text-sm">
+                                <Clock className="h-4 w-4" style={{ color: "#98A2B3" }} />
+                                <div>
+                                    <p className="font-medium" style={{ color: "#051F45" }}>
+                                        {formatDate(date)}
+                                    </p>
+                                    <p className="text-xs" style={{ color: "#98A2B3" }}>
+                                        {eventInfo.description}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="p-3 rounded-lg" style={{ backgroundColor: "rgba(242, 196, 205, 0.1)" }}>
+                                <p className="text-xs" style={{ color: "#98A2B3" }}>
+                                    <strong style={{ color: "#051F45" }}>Особенности:</strong> {features}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 pt-4">
+                            <Button
+                                variant="outline"
+                                onClick={onClose}
+                                className="flex-1 bg-transparent"
+                                disabled={isAdding}
+                                style={{ borderColor: "#98A2B3", color: "#98A2B3" }}
+                            >
+                                Отмена
+                            </Button>
+                            <Button
+                                onClick={handleAddToCalendar}
+                                className="flex-1"
+                                disabled={isAdding}
+                                style={{
+                                    backgroundColor: "#051F45",
+                                    color: "white",
+                                }}
+                            >
+                                {isAdding ? "Добавляю..." : "Добавить в расписание"}
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                )}
             </DialogContent>
         </Dialog>
     )
