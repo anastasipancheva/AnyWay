@@ -461,8 +461,14 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
   }
 
   const handleAddToCalendar = (event: CalendarEvent) => {
+    console.log("[v0] UniversitySelection received event to add:", event)
+    console.log("[v0] onAddToCalendar prop exists:", !!onAddToCalendar)
+
     if (onAddToCalendar) {
+      console.log("[v0] Calling onAddToCalendar with event:", event)
       onAddToCalendar(event)
+    } else {
+      console.log("[v0] ERROR: onAddToCalendar prop is missing!")
     }
     setModalData({ isOpen: false })
   }

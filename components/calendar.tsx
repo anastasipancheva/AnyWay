@@ -113,21 +113,25 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents)
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear] = useState(2025)
+  const [reminders, setReminders] = useState<Set<number>>(new Set())
 
   useEffect(() => {
     console.log("[v0] Calendar received external events:", externalEvents)
-    if (externalEvents.length > 0) {
-      setEvents((prev) => {
-        const existingIds = new Set(prev.map((e) => e.id))
+    if (externalEvents && externalEvents.length > 0) {
+      setEvents((prevEvents) => {
+        const existingIds = new Set(prevEvents.map((e) => e.id))
         const newEvents = externalEvents.filter((e) => !existingIds.has(e.id))
         console.log("[v0] Adding new events to calendar:", newEvents)
+
         if (newEvents.length > 0) {
-          return [...prev, ...newEvents]
+          const updatedEvents = [...prevEvents, ...newEvents]
+          console.log("[v0] Updated events list:", updatedEvents)
+          return updatedEvents
         }
-        return prev
+        return prevEvents
       })
     }
-  }, [externalEvents])
+  }, [externalEvents?.length, externalEvents])
 
   const addEvent = (newEvent: CalendarEvent) => {
     console.log("[v0] Adding event directly:", newEvent)
@@ -135,6 +139,32 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
     if (onAddEvent) {
       onAddEvent(newEvent)
     }
+  }
+
+  const toggleReminder = (eventId: number, eventTitle: string) => {
+    setReminders((prev) => {
+      const newReminders = new Set(prev)
+      if (newReminders.has(eventId)) {
+        newReminders.delete(eventId)
+        console.log("[v0] Reminder removed for:", eventTitle)
+        // Here you could remove browser notification
+      } else {
+        newReminders.add(eventId)
+        console.log("[v0] Reminder set for:", eventTitle)
+        // Here you could set up browser notification
+        if ("Notification" in window) {
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              new Notification("Напоминание установлено", {
+                body: `Напоминание для "${eventTitle}" активировано`,
+                icon: "/favicon.ico",
+              })
+            }
+          })
+        }
+      }
+      return newReminders
+    })
   }
 
   const getEventTypeColor = (type: string) => {
@@ -169,6 +199,11 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
 
   const removeEvent = (eventId: number) => {
     setEvents((prev) => prev.filter((e) => e.id !== eventId))
+    setReminders((prev) => {
+      const newReminders = new Set(prev)
+      newReminders.delete(eventId)
+      return newReminders
+    })
   }
 
   const filteredEvents = events.filter((event) => {
@@ -203,14 +238,14 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
           <div
               key={day}
               className={`h-12 flex flex-col items-center justify-center text-sm relative rounded-lg transition-all duration-200 hover:bg-primary/5 ${
-                  isToday ? "bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg" : ""
+                  isToday ? "bg-gradient-to-br from-[#051F45] to-[#051F45]/80 text-white shadow-lg" : ""
               }`}
           >
             <span className="font-semibold">{day}</span>
             {dayEvents.length > 0 && (
                 <div className="absolute -bottom-1 flex gap-1">
                   {dayEvents.slice(0, 3).map((_, index) => (
-                      <div key={index} className="w-1.5 h-1.5 bg-accent rounded-full"></div>
+                      <div key={index} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#F2C4CD" }}></div>
                   ))}
                 </div>
             )}
@@ -222,12 +257,24 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
   }
 
   return (
-      <div className="p-6 space-y-6 bg-gradient-to-br from-background to-primary/5 min-h-screen">
+      <div
+          className="p-6 space-y-6 min-h-screen"
+          style={{ background: "linear-gradient(135deg, #F6F7FA 0%, rgba(5, 31, 69, 0.05) 100%)" }}
+      >
         <div className="text-center">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent mb-3">
+          <h2
+              className="text-3xl font-bold mb-3"
+              style={{
+                background: "linear-gradient(to right, #051F45, rgba(5, 31, 69, 0.7))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+          >
             Календарь олимпиад 2025
           </h2>
-          <p className="text-neutral-gray text-lg">Ваши олимпиады и важные даты</p>
+          <p className="text-lg" style={{ color: "#98A2B3" }}>
+            Ваши олимпиады и важные даты
+          </p>
         </div>
 
         <div className="flex items-center justify-between mb-6">
@@ -235,18 +282,20 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
               variant="ghost"
               size="lg"
               onClick={() => setSelectedMonth((prev) => (prev === 0 ? 11 : prev - 1))}
-              className="text-primary hover:bg-primary/10 font-semibold"
+              className="font-semibold hover:bg-white"
+              style={{ color: "#051F45" }}
           >
             ← Предыдущий
           </Button>
-          <h3 className="font-bold text-2xl text-primary">
+          <h3 className="font-bold text-2xl" style={{ color: "#051F45" }}>
             {months[selectedMonth]} {selectedYear}
           </h3>
           <Button
               variant="ghost"
               size="lg"
               onClick={() => setSelectedMonth((prev) => (prev === 11 ? 0 : prev + 1))}
-              className="text-primary hover:bg-primary/10 font-semibold"
+              className="font-semibold hover:bg-white"
+              style={{ color: "#051F45" }}
           >
             Следующий →
           </Button>
@@ -257,7 +306,8 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
             {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((day) => (
                 <div
                     key={day}
-                    className="h-10 flex items-center justify-center text-sm font-bold text-primary bg-primary/5 rounded-lg"
+                    className="h-10 flex items-center justify-center text-sm font-bold rounded-lg"
+                    style={{ color: "#051F45", backgroundColor: "rgba(5, 31, 69, 0.05)" }}
                 >
                   {day}
                 </div>
@@ -267,14 +317,16 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
         </Card>
 
         <div className="space-y-4">
-          <h3 className="font-bold text-xl text-primary flex items-center gap-2">
-            <span className="w-3 h-3 bg-accent rounded-full"></span>
+          <h3 className="font-bold text-xl flex items-center gap-2" style={{ color: "#051F45" }}>
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#F2C4CD" }}></span>
             События в {months[selectedMonth].toLowerCase()} ({filteredEvents.length})
           </h3>
           {filteredEvents.length === 0 ? (
               <Card className="p-8 text-center shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                 <div className="text-6xl mb-4">📅</div>
-                <p className="text-neutral-gray text-lg">Нет событий в этом месяце</p>
+                <p className="text-lg" style={{ color: "#98A2B3" }}>
+                  Нет событий в этом месяце
+                </p>
               </Card>
           ) : (
               filteredEvents.map((event) => (
@@ -283,25 +335,29 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
                       className="p-6 shadow-lg border-0 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-all duration-300"
                   >
                     <div className="flex justify-between items-start mb-4">
-                      <h4 className="font-bold text-primary text-lg">{event.title}</h4>
+                      <h4 className="font-bold text-lg" style={{ color: "#051F45" }}>
+                        {event.title}
+                      </h4>
                       <Badge className={`${getEventTypeColor(event.type)} font-semibold px-3 py-1`}>
                         {getEventTypeLabel(event.type)}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-4 mb-2">
-                      <p className="text-sm text-neutral-gray font-medium">{event.olympiad}</p>
+                      <p className="text-sm font-medium" style={{ color: "#98A2B3" }}>
+                        {event.olympiad}
+                      </p>
                       {event.subject && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                             {event.subject}
                           </Badge>
                       )}
                       {event.level && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs" style={{ borderColor: "#051F45", color: "#051F45" }}>
                             {event.level}
                           </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-neutral-gray mb-4">
+                    <p className="text-sm mb-4" style={{ color: "#98A2B3" }}>
                       {new Date(event.date).toLocaleDateString("ru", {
                         weekday: "long",
                         year: "numeric",
@@ -313,9 +369,11 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
                       <Button
                           size="sm"
                           variant="outline"
-                          className="text-sm border-primary/20 hover:bg-primary/5 bg-transparent"
+                          className={`text-sm bg-transparent hover:bg-white ${reminders.has(event.id) ? "border-green-500 text-green-600" : ""}`}
+                          style={{ borderColor: reminders.has(event.id) ? "#10b981" : "rgba(5, 31, 69, 0.2)" }}
+                          onClick={() => toggleReminder(event.id, event.title)}
                       >
-                        🔔 Напомнить
+                        {reminders.has(event.id) ? "🔔 Напоминание установлено" : "🔔 Напомнить"}
                       </Button>
                       <Button
                           size="sm"
