@@ -500,6 +500,7 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
     return { direction, uni, subj }
   }, [selectedDirection])
 
+  // ===================== ВЕТКА 1: выбранное НАПРАВЛЕНИЕ =====================
   if (selectedDirection) {
     const direction = universities.flatMap((u) => u.directions).find((d) => d.id === selectedDirection)
     const university = universities.find((u) => u.directions.some((d) => d.id === selectedDirection))
@@ -687,6 +688,67 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
     )
   }
 
+  // ===================== ВЕТКА 2: выбран ВУЗ (НО не направление) =====================
+  if (selectedUniversity) {
+    const university = universities.find((u) => u.id === selectedUniversity)
+
+    return (
+        <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedUniversity(null)}
+                style={{ color: "#051F45" }}
+                className="hover:bg-white"
+            >
+              ← Назад
+            </Button>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-2">{university?.logo}</div>
+            <h2 className="text-lg font-bold" style={{ color: "#051F45" }}>
+              {university?.name}
+            </h2>
+            <p className="text-sm" style={{ color: "#98A2B3" }}>
+              Выберите направление
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {university?.directions.map((direction) => (
+                <Card
+                    key={direction.id}
+                    className="p-4 hover:shadow-md transition-all cursor-pointer border"
+                    style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+                    onClick={() => setSelectedDirection(direction.id)}
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold" style={{ color: "#051F45" }}>
+                        {direction.name}
+                      </h3>
+                      <p className="text-xs" style={{ color: "#98A2B3" }}>{direction.code}</p>
+                      <div className="flex gap-4 mt-2 text-xs" style={{ color: "#98A2B3" }}>
+                    <span>
+                      Бюджет: <span style={{ color: "#051F45" }}>{direction.budgetPlaces}</span>
+                    </span>
+                        <span>
+                      Проходной: <span style={{ color: "#051F45" }}>{direction.passingScore}</span>
+                    </span>
+                      </div>
+                    </div>
+                    <div className="text-xl" style={{ color: "#98A2B3" }}>→</div>
+                  </div>
+                </Card>
+            ))}
+          </div>
+        </div>
+    )
+  }
+
+  // ===================== ВЕТКА 3: стартовый экран (выбор ВУЗа) =====================
   return (
       <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
         <div className="text-center mb-6">
@@ -742,3 +804,4 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
 }
 
 export { UniversitySelection }
+
