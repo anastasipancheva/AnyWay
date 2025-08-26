@@ -262,32 +262,33 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             </Card>
 
             {/* Achievements */}
+            {/* Achievements */}
             <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
-                <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
-                    Достижения
-                </h3>
+                <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>Достижения</h3>
                 <div className="space-y-3">
                     {achievements.map((achievement) => (
                         <div
                             key={achievement.id}
                             className={`flex items-center gap-3 p-3 rounded-lg ${
-                                achievement.earned ? "bg-opacity-20" : "bg-opacity-10"
+                                achievement.earned ? "bg-accent/20" : "bg-neutral-gray/10"
                             }`}
-                            style={{ backgroundColor: achievement.earned ? "#F2C4CD" : "#98A2B3" }}
                         >
-                            <div className={`text-2xl ${achievement.earned ? "" : "grayscale opacity-50"}`}>{achievement.icon}</div>
+                            <div className={`text-2xl ${achievement.earned ? "" : "opacity-60"}`}>
+                                {achievement.icon}
+                            </div>
                             <div className="flex-1">
                                 <h4
-                                    className={`font-medium ${achievement.earned ? "" : ""}`}
-                                    style={{ color: achievement.earned ? "#051F45" : "#98A2B3" }}
+                                    className={`font-medium ${
+                                        achievement.earned ? "text-primary" : "text-primary/70"
+                                    }`}
                                 >
                                     {achievement.title}
                                 </h4>
-                                <p className="text-xs" style={{ color: "#98A2B3" }}>
-                                    {achievement.description}
-                                </p>
+                                <p className="text-xs text-neutral-gray">{achievement.description}</p>
                             </div>
-                            {achievement.earned && <Badge style={{ backgroundColor: "#051F45", color: "white" }}>✓</Badge>}
+                            {achievement.earned && (
+                                <Badge className="bg-primary !text-white">✓</Badge>
+                            )}
                         </div>
                     ))}
                 </div>
