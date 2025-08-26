@@ -8,26 +8,6 @@ import { UniversitySelection } from "@/components/generate-olympiads-for-directi
 import { SelfTracking } from "@/components/self-tracking"
 import type { CalendarEvent } from "@/components/event-modal"
 
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp: {
-        ready(): void
-        expand(): void
-        showAlert(message: string): void
-        openTelegramLink(url: string): void
-        initDataUnsafe?: {
-          user?: {
-            id: number
-            first_name: string
-            username: string
-          }
-        }
-      }
-    }
-  }
-}
-
 function StudyBuddy() {
   return (
       <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
