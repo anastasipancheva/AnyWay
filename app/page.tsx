@@ -5,15 +5,40 @@ import { Navigation } from "@/components/navigation"
 import { ProfileEditable } from "@/components/profile-editable"
 import { Calendar } from "@/components/calendar"
 import { UniversitySelection } from "@/components/generate-olympiads-for-direction"
+import { SelfTracking } from "@/components/self-tracking"
 import type { CalendarEvent } from "@/components/event-modal"
+
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp: {
+        ready(): void
+        expand(): void
+        showAlert(message: string): void
+        openTelegramLink(url: string): void
+        initDataUnsafe?: {
+          user?: {
+            id: number
+            first_name: string
+            username: string
+          }
+        }
+      }
+    }
+  }
+}
 
 function StudyBuddy() {
   return (
-      <div className="p-4 text-center" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
-        <h2 className="text-xl font-bold mb-4" style={{ color: "#051F45" }}>
-          StudyBuddy
-        </h2>
-        <p style={{ color: "#98A2B3" }}>Раздел в разработке</p>
+      <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold mb-4" style={{ color: "#051F45" }}>
+            StudyBuddy
+          </h2>
+          <p style={{ color: "#98A2B3" }}>Найдите напарника для подготовки к олимпиадам</p>
+        </div>
+
+        <SelfTracking />
       </div>
   )
 }
