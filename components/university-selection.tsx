@@ -72,7 +72,13 @@ const universities: University[] = [
     directions: [
       { id: 13, name: "Машиностроение", code: "15.03.01", budgetPlaces: 200, passingScore: 280 },
       { id: 14, name: "Информатика и вычислительная техника", code: "09.03.01", budgetPlaces: 180, passingScore: 320 },
-      { id: 15, name: "Автоматизация технологических процессов", code: "15.03.04", budgetPlaces: 150, passingScore: 290 },
+      {
+        id: 15,
+        name: "Автоматизация технологических процессов",
+        code: "15.03.04",
+        budgetPlaces: 150,
+        passingScore: 290,
+      },
       { id: 16, name: "Радиотехника", code: "11.03.01", budgetPlaces: 120, passingScore: 300 },
       { id: 17, name: "Электроника и наноэлектроника", code: "11.03.04", budgetPlaces: 100, passingScore: 310 },
       { id: 18, name: "Ракетные комплексы и космонавтика", code: "24.03.01", budgetPlaces: 80, passingScore: 330 },
@@ -174,7 +180,13 @@ const universities: University[] = [
     directions: [
       { id: 2201, name: "Математика", code: "01.03.01", budgetPlaces: 120, passingScore: 320 },
       { id: 2202, name: "Физика", code: "03.03.02", budgetPlaces: 140, passingScore: 315 },
-      { id: 2203, name: "Информатика и вычислительная техника", code: "09.03.01", budgetPlaces: 160, passingScore: 330 },
+      {
+        id: 2203,
+        name: "Информатика и вычислительная техника",
+        code: "09.03.01",
+        budgetPlaces: 160,
+        passingScore: 330,
+      },
       { id: 2204, name: "Прикладная математика и информатика", code: "01.03.02", budgetPlaces: 120, passingScore: 325 },
       { id: 2205, name: "Биология", code: "06.03.01", budgetPlaces: 120, passingScore: 305 },
     ],
@@ -185,7 +197,13 @@ const universities: University[] = [
     shortName: "СФУ",
     logo: "🌲",
     directions: [
-      { id: 2101, name: "Информатика и вычислительная техника", code: "09.03.01", budgetPlaces: 200, passingScore: 275 },
+      {
+        id: 2101,
+        name: "Информатика и вычислительная техника",
+        code: "09.03.01",
+        budgetPlaces: 200,
+        passingScore: 275,
+      },
       { id: 2102, name: "Машиностроение", code: "15.03.01", budgetPlaces: 180, passingScore: 260 },
       { id: 2103, name: "Энергетика", code: "13.03.02", budgetPlaces: 150, passingScore: 265 },
       { id: 2104, name: "Строительство", code: "08.03.01", budgetPlaces: 220, passingScore: 250 },
@@ -198,7 +216,13 @@ const universities: University[] = [
     shortName: "УрФУ",
     logo: "⛰️",
     directions: [
-      { id: 2301, name: "Информатика и вычислительная техника", code: "09.03.01", budgetPlaces: 180, passingScore: 285 },
+      {
+        id: 2301,
+        name: "Информатика и вычислительная техника",
+        code: "09.03.01",
+        budgetPlaces: 180,
+        passingScore: 285,
+      },
       { id: 2302, name: "Программная инженерия", code: "09.03.04", budgetPlaces: 160, passingScore: 295 },
       { id: 2303, name: "Электроэнергетика", code: "13.03.02", budgetPlaces: 160, passingScore: 280 },
       { id: 2304, name: "Машиностроение", code: "15.03.01", budgetPlaces: 200, passingScore: 270 },
@@ -217,34 +241,118 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Математика",
       validYears: "10-11 класс",
-      registration: "2024-09-01",
-      qualifying: "2024-10-15",
-      final: "2024-12-10",
-      features: "Самая престижная олимпиада по математике",
+      registration: "2025-09-01",
+      qualifying: "2025-10-15",
+      final: "2025-03-15",
+      features: "БВИ в ведущие вузы России",
     },
     {
       id: 2,
-      name: "Московская олимпиада школьников",
+      name: "Московская математическая олимпиада",
       level: 1,
       type: "БВИ",
       subject: "Математика",
       validYears: "9-11 класс",
-      registration: "2024-09-15",
-      qualifying: "2024-11-01",
-      final: "2024-12-15",
-      features: "Региональная олимпиада высокого уровня",
+      registration: "2025-09-15",
+      qualifying: "2025-11-01",
+      final: "2025-02-20",
+      features: "БВИ в МГУ, МФТИ, ВШЭ",
     },
     {
       id: 3,
-      name: "Олимпиада школьников «Ломоносов»",
+      name: "Турнир городов",
       level: 1,
       type: "БВИ",
       subject: "Математика",
-      validYears: "10-11 класс",
-      registration: "2024-10-01",
-      qualifying: "2024-11-15",
-      final: "2025-01-20",
-      features: "Олимпиада МГУ по математике",
+      validYears: "8-11 класс",
+      registration: "2025-09-20",
+      qualifying: "2025-10-20",
+      final: "2025-04-10",
+      features: "Международная олимпиада, БВИ в топ-вузы",
+    },
+    {
+      id: 4,
+      name: "Олимпиада школьников по физике (ВсОШ)",
+      level: "ВсОШ",
+      type: "БВИ",
+      subject: "Физика",
+      validYears: "9-11 класс",
+      registration: "2025-09-01",
+      qualifying: "2025-11-15",
+      final: "2025-04-05",
+      features: "БВИ в технические вузы",
+    },
+    {
+      id: 5,
+      name: "Московская олимпиада школьников по физике",
+      level: 1,
+      type: "БВИ",
+      subject: "Физика",
+      validYears: "7-11 класс",
+      registration: "2025-10-01",
+      qualifying: "2025-12-01",
+      final: "2025-03-01",
+      features: "БВИ в МФТИ, МГУ, МИФИ",
+    },
+    {
+      id: 6,
+      name: "Олимпиада школьников по информатике (ВсОШ)",
+      level: "ВсОШ",
+      type: "БВИ",
+      subject: "Информатика",
+      validYears: "9-11 класс",
+      registration: "2025-09-01",
+      qualifying: "2025-10-25",
+      final: "2025-04-20",
+      features: "БВИ в IT-направления ведущих вузов",
+    },
+    {
+      id: 7,
+      name: "Открытая олимпиада школьников по программированию",
+      level: 1,
+      type: "БВИ",
+      subject: "Информатика",
+      validYears: "8-11 класс",
+      registration: "2025-10-15",
+      qualifying: "2025-12-15",
+      final: "2025-03-25",
+      features: "БВИ в СПбГУ, ИТМО, ВШЭ",
+    },
+    {
+      id: 8,
+      name: "Олимпиада школьников по химии (ВсОШ)",
+      level: "ВсОШ",
+      type: "БВИ",
+      subject: "Химия",
+      validYears: "9-11 класс",
+      registration: "2025-09-01",
+      qualifying: "2025-11-20",
+      final: "2025-04-15",
+      features: "БВИ в химические и медицинские вузы",
+    },
+    {
+      id: 9,
+      name: "Московская олимпиада школьников по химии",
+      level: 1,
+      type: "БВИ",
+      subject: "Химия",
+      validYears: "8-11 класс",
+      registration: "2025-10-01",
+      qualifying: "2025-12-10",
+      final: "2025-02-28",
+      features: "БВИ в МГУ, РХТУ, Первый МГМУ",
+    },
+    {
+      id: 10,
+      name: "Олимпиада школьников по биологии (ВсОШ)",
+      level: "ВсОШ",
+      type: "БВИ",
+      subject: "Биология",
+      validYears: "9-11 класс",
+      registration: "2025-09-01",
+      qualifying: "2025-11-10",
+      final: "2025-04-25",
+      features: "БВИ в медицинские и биологические вузы",
     },
   ],
   2: [
@@ -255,9 +363,9 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Физика",
       validYears: "10-11 класс",
-      registration: "2024-09-01",
-      qualifying: "2024-10-20",
-      final: "2024-12-12",
+      registration: "2025-09-01",
+      qualifying: "2025-10-20",
+      final: "2025-12-12",
       features: "Включает теоретический и экспериментальный туры",
     },
     {
@@ -267,9 +375,9 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Физика",
       validYears: "9-11 класс",
-      registration: "2024-09-15",
-      qualifying: "2024-11-05",
-      final: "2024-12-18",
+      registration: "2025-09-15",
+      qualifying: "2025-11-05",
+      final: "2025-12-18",
       features: "Сильная физическая олимпиада Москвы",
     },
   ],
@@ -281,9 +389,9 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Информатика",
       validYears: "10-11 класс",
-      registration: "2024-09-01",
-      qualifying: "2024-10-25",
-      final: "2024-12-20",
+      registration: "2025-09-01",
+      qualifying: "2025-10-25",
+      final: "2025-12-20",
       features: "Программирование на Pascal, C++, Python",
     },
     {
@@ -293,8 +401,8 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Информатика",
       validYears: "9-11 класс",
-      registration: "2024-10-01",
-      qualifying: "2024-11-10",
+      registration: "2025-10-01",
+      qualifying: "2025-11-10",
       final: "2025-01-15",
       features: "Спортивное программирование",
     },
@@ -307,8 +415,8 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Экономика",
       validYears: "10-11 класс",
-      registration: "2024-10-01",
-      qualifying: "2024-11-20",
+      registration: "2025-10-01",
+      qualifying: "2025-11-20",
       final: "2025-02-10",
       features: "Олимпиада НИУ ВШЭ по экономике",
     },
@@ -319,8 +427,8 @@ const olympiads: Record<number, Olympiad[]> = {
       type: "БВИ",
       subject: "Экономика",
       validYears: "10-11 класс",
-      registration: "2024-09-20",
-      qualifying: "2024-11-25",
+      registration: "2025-09-20",
+      qualifying: "2025-11-25",
       final: "2025-01-25",
       features: "Престижная экономическая олимпиада",
     },
@@ -333,7 +441,11 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
 
   let subject = "Математика"
   if (directionName.toLowerCase().includes("физ")) subject = "Физика"
-  else if (directionName.includes("Информатика") || directionName.includes("Программная") || directionName.toLowerCase().includes("информ"))
+  else if (
+      directionName.includes("Информатика") ||
+      directionName.includes("Программная") ||
+      directionName.toLowerCase().includes("информ")
+  )
     subject = "Информатика"
   else if (directionName.toLowerCase().includes("эконом")) subject = "Экономика"
   else if (directionName.toLowerCase().includes("хим")) subject = "Химия"
@@ -353,9 +465,9 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
     type: "БВИ",
     subject,
     validYears: "10-11 класс",
-    registration: "2024-09-01",
-    qualifying: "2024-10-15",
-    final: "2024-12-10",
+    registration: "2025-09-01",
+    qualifying: "2025-10-15",
+    final: "2025-12-10",
     features: `Самая престижная олимпиада по ${subject.toLowerCase()}. Дает БВИ на все направления по профилю.`,
   })
 
@@ -367,9 +479,9 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "БВИ",
       subject: "Математика",
       validYears: "9-11 класс",
-      registration: "2024-09-15",
-      qualifying: "2024-11-01",
-      final: "2024-12-15",
+      registration: "2025-09-15",
+      qualifying: "2025-11-01",
+      final: "2025-12-15",
       features: "Региональная олимпиада высокого уровня",
     })
     baseOlympiads.push({
@@ -379,9 +491,9 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "БВИ",
       subject: "Математика",
       validYears: "8-11 класс",
-      registration: "2024-09-20",
-      qualifying: "2024-10-20",
-      final: "2024-12-20",
+      registration: "2025-09-20",
+      qualifying: "2025-10-20",
+      final: "2025-12-20",
       features: "Международная математическая олимпиада",
     })
   } else if (subject === "Физика") {
@@ -392,9 +504,9 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "БВИ",
       subject: "Физика",
       validYears: "9-11 класс",
-      registration: "2024-09-15",
-      qualifying: "2024-11-05",
-      final: "2024-12-18",
+      registration: "2025-09-15",
+      qualifying: "2025-11-05",
+      final: "2025-12-18",
       features: "Сильная физическая олимпиада Москвы",
     })
     baseOlympiads.push({
@@ -404,8 +516,8 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "БВИ",
       subject: "Физика",
       validYears: "9-11 класс",
-      registration: "2024-10-01",
-      qualifying: "2024-11-10",
+      registration: "2025-10-01",
+      qualifying: "2025-11-10",
       final: "2025-01-25",
       features: "Олимпиада МФТИ по физике",
     })
@@ -417,8 +529,8 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "БВИ",
       subject: "Информатика",
       validYears: "9-11 класс",
-      registration: "2024-10-01",
-      qualifying: "2024-11-10",
+      registration: "2025-10-01",
+      qualifying: "2025-11-10",
       final: "2025-01-15",
       features: "Спортивное программирование",
     })
@@ -429,8 +541,8 @@ const generateOlympiadsForDirection = (directionId: number, directionName: strin
       type: "100 баллов",
       subject: "Информатика",
       validYears: "8-11 класс",
-      registration: "2024-09-25",
-      qualifying: "2024-11-15",
+      registration: "2025-09-25",
+      qualifying: "2025-11-15",
       final: "2025-01-20",
       features: "Даёт 100 баллов ЕГЭ (подтверждение 75+), без БВИ для ряда вузов",
     })
@@ -716,7 +828,9 @@ export function UniversitySelection() {
   const [searchQuery, setSearchQuery] = useState("")
 
   const handleSelectOlympiad = (olympiadId: number) => {
-    setSelectedOlympiads((prev) => (prev.includes(olympiadId) ? prev.filter((id) => id !== olympiadId) : [...prev, olympiadId]))
+    setSelectedOlympiads((prev) =>
+        prev.includes(olympiadId) ? prev.filter((id) => id !== olympiadId) : [...prev, olympiadId],
+    )
   }
 
   const filteredUniversities = universities.filter(
@@ -736,6 +850,32 @@ export function UniversitySelection() {
     if (n.includes("юриспруд")) return "Обществознание"
     if (n.includes("геолог") || n.includes("географ")) return "География"
     return "Математика"
+  }
+
+  const createCalendarEvent = (olympiad: Olympiad, eventType: "registration" | "qualifying" | "final") => {
+    const eventDates = {
+      registration: olympiad.registration,
+      qualifying: olympiad.qualifying,
+      final: olympiad.final,
+    }
+
+    const eventTitles = {
+      registration: `Регистрация: ${olympiad.name}`,
+      qualifying: `Отборочный этап: ${olympiad.name}`,
+      final: `Заключительный этап: ${olympiad.name}`,
+    }
+
+    const date = new Date(eventDates[eventType])
+    const title = eventTitles[eventType]
+    const details = `Предмет: ${olympiad.subject}\nКлассы: ${olympiad.validYears}\nОсобенности: ${olympiad.features}`
+
+    // Create calendar event URL for different calendar services
+    const startDate = date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+    const endDate = new Date(date.getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}`
+
+    window.open(googleCalendarUrl, "_blank")
   }
 
   const directionContext = useMemo(() => {
@@ -832,48 +972,103 @@ export function UniversitySelection() {
 
             <div className="space-y-2">
               <h4 className="font-semibold text-primary text-sm">🏆 БВИ (Без вступительных испытаний)</h4>
+              {/* Updated olympiad card rendering with calendar buttons and improved design */}
               {directionOlympiads
                   .filter((o) => o.type === "БВИ")
                   .map((olympiad) => (
                       <Card
                           key={olympiad.id}
-                          className="p-4 card-hover cursor-pointer"
+                          className="p-6 card-hover cursor-pointer border-l-4 border-l-primary shadow-lg hover:shadow-xl transition-all duration-300"
                           onClick={() => handleSelectOlympiad(olympiad.id)}
                       >
-                        <div className="flex justify-between items-start mb-2">
-                          <h5 className="font-semibold text-primary text-sm">{olympiad.name}</h5>
+                        <div className="flex justify-between items-start mb-4">
+                          <h5 className="font-bold text-primary text-base leading-tight">{olympiad.name}</h5>
                           <Badge
                               variant={olympiad.level === "ВсОШ" ? "default" : "secondary"}
-                              className="bg-primary text-white"
+                              className="bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1 text-xs font-semibold"
                           >
                             {olympiad.level === "ВсОШ" ? "ВсОШ" : `${olympiad.level} уровень`}
                           </Badge>
                         </div>
-                        <div className="space-y-1 text-xs text-neutral-gray">
-                          <p>
-                            <strong>Предмет:</strong> {olympiad.subject}
-                          </p>
-                          <p>
-                            <strong>Классы:</strong> {olympiad.validYears}
-                          </p>
-                          <p>
-                            <strong>Регистрация:</strong> {new Date(olympiad.registration).toLocaleDateString("ru")}
-                          </p>
-                          <p>
-                            <strong>Отборочный:</strong> {new Date(olympiad.qualifying).toLocaleDateString("ru")}
-                          </p>
-                          <p>
-                            <strong>Заключительный:</strong> {new Date(olympiad.final).toLocaleDateString("ru")}
-                          </p>
-                          <p className="text-primary">
+
+                        <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+                          <div className="space-y-2">
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                              <strong>Предмет:</strong> {olympiad.subject}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                              <strong>Классы:</strong> {olympiad.validYears}
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                              <strong>Регистрация:</strong> {new Date(olympiad.registration).toLocaleDateString("ru")}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                              <strong>Отборочный:</strong> {new Date(olympiad.qualifying).toLocaleDateString("ru")}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                              <strong>Заключительный:</strong> {new Date(olympiad.final).toLocaleDateString("ru")}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-3 rounded-lg mb-4">
+                          <p className="text-primary font-medium text-sm">
                             <strong>Особенности:</strong> {olympiad.features}
                           </p>
                         </div>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "registration")
+                              }}
+                          >
+                            📅 Регистрация
+                          </Button>
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-yellow-50 border-yellow-200 text-yellow-700 hover:bg-yellow-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "qualifying")
+                              }}
+                          >
+                            📅 Отборочный
+                          </Button>
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "final")
+                              }}
+                          >
+                            📅 Заключительный
+                          </Button>
+                        </div>
+
                         <Button
                             size="sm"
-                            className={`mt-3 w-full ${selectedOlympiads.includes(olympiad.id) ? "bg-accent text-primary" : "bg-primary text-white"}`}
+                            className={`w-full font-semibold transition-all duration-200 ${
+                                selectedOlympiads.includes(olympiad.id)
+                                    ? "bg-gradient-to-r from-accent to-accent/80 text-primary hover:from-accent/90 hover:to-accent/70"
+                                    : "bg-gradient-to-r from-primary to-primary/80 text-white hover:from-primary/90 hover:to-primary/70"
+                            }`}
                         >
-                          {selectedOlympiads.includes(olympiad.id) ? "✓ Выбрано" : "Выбрать"}
+                          {selectedOlympiads.includes(olympiad.id) ? "✓ Выбрано" : "Выбрать олимпиаду"}
                         </Button>
                       </Card>
                   ))}
@@ -881,45 +1076,103 @@ export function UniversitySelection() {
 
             <div className="space-y-2">
               <h4 className="font-semibold text-primary text-sm">💯 100 баллов ЕГЭ</h4>
+              {/* Updated 100 баллов section with same improvements */}
               {directionOlympiads
                   .filter((o) => o.type === "100 баллов")
                   .map((olympiad) => (
                       <Card
                           key={olympiad.id}
-                          className="p-4 card-hover cursor-pointer"
+                          className="p-6 card-hover cursor-pointer border-l-4 border-l-accent shadow-lg hover:shadow-xl transition-all duration-300"
                           onClick={() => handleSelectOlympiad(olympiad.id)}
                       >
-                        <div className="flex justify-between items-start mb-2">
-                          <h5 className="font-semibold text-primary text-sm">{olympiad.name}</h5>
-                          <Badge variant="secondary" className="bg-accent text-primary">
+                        <div className="flex justify-between items-start mb-4">
+                          <h5 className="font-bold text-primary text-base leading-tight">{olympiad.name}</h5>
+                          <Badge
+                              variant="secondary"
+                              className="bg-gradient-to-r from-accent to-accent/80 text-primary px-3 py-1 text-xs font-semibold"
+                          >
                             {olympiad.level} уровень
                           </Badge>
                         </div>
-                        <div className="space-y-1 text-xs text-neutral-gray">
-                          <p>
-                            <strong>Предмет:</strong> {olympiad.subject}
-                          </p>
-                          <p>
-                            <strong>Классы:</strong> {olympiad.validYears}
-                          </p>
-                          <p>
-                            <strong>Регистрация:</strong> {new Date(olympiad.registration).toLocaleDateString("ru")}
-                          </p>
-                          <p>
-                            <strong>Отборочный:</strong> {new Date(olympiad.qualifying).toLocaleDateString("ru")}
-                          </p>
-                          <p>
-                            <strong>Заключительный:</strong> {new Date(olympiad.final).toLocaleDateString("ru")}
-                          </p>
-                          <p className="text-primary">
+
+                        <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+                          <div className="space-y-2">
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                              <strong>Предмет:</strong> {olympiad.subject}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                              <strong>Классы:</strong> {olympiad.validYears}
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                              <strong>Регистрация:</strong> {new Date(olympiad.registration).toLocaleDateString("ru")}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                              <strong>Отборочный:</strong> {new Date(olympiad.qualifying).toLocaleDateString("ru")}
+                            </p>
+                            <p className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                              <strong>Заключительный:</strong> {new Date(olympiad.final).toLocaleDateString("ru")}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-accent/5 to-primary/5 p-3 rounded-lg mb-4">
+                          <p className="text-primary font-medium text-sm">
                             <strong>Особенности:</strong> {olympiad.features}
                           </p>
                         </div>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "registration")
+                              }}
+                          >
+                            📅 Регистрация
+                          </Button>
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-yellow-50 border-yellow-200 text-yellow-700 hover:bg-yellow-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "qualifying")
+                              }}
+                          >
+                            📅 Отборочный
+                          </Button>
+                          <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                createCalendarEvent(olympiad, "final")
+                              }}
+                          >
+                            📅 Заключительный
+                          </Button>
+                        </div>
+
                         <Button
                             size="sm"
-                            className={`mt-3 w-full ${selectedOlympiads.includes(olympiad.id) ? "bg-accent text-primary" : "bg-primary text-white"}`}
+                            className={`w-full font-semibold transition-all duration-200 ${
+                                selectedOlympiads.includes(olympiad.id)
+                                    ? "bg-gradient-to-r from-accent to-accent/80 text-primary hover:from-accent/90 hover:to-accent/70"
+                                    : "bg-gradient-to-r from-primary to-primary/80 text-white hover:from-primary/90 hover:to-primary/70"
+                            }`}
                         >
-                          {selectedOlympiads.includes(olympiad.id) ? "✓ Выбрано" : "Выбрать"}
+                          {selectedOlympiads.includes(olympiad.id) ? "✓ Выбрано" : "Выбрать олимпиаду"}
                         </Button>
                       </Card>
                   ))}
@@ -959,7 +1212,11 @@ export function UniversitySelection() {
 
           <div className="space-y-3">
             {university?.directions.map((direction) => (
-                <Card key={direction.id} className="p-4 card-hover cursor-pointer" onClick={() => setSelectedDirection(direction.id)}>
+                <Card
+                    key={direction.id}
+                    className="p-4 card-hover cursor-pointer"
+                    onClick={() => setSelectedDirection(direction.id)}
+                >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h3 className="font-semibold text-primary">{direction.name}</h3>
@@ -995,15 +1252,19 @@ export function UniversitySelection() {
           {/* Дисклеймер об обновлениях */}
           <Card className="p-3 bg-light-gray">
             <p className="text-xs text-neutral-gray">
-              <strong>Важно:</strong> перечни олимпиад и даты (в т.ч. дни открытых дверей) ежегодно обновляются в начале учебного года.
-              Мы следим за изменениями и напомним вам об актуализациях.
+              <strong>Важно:</strong> перечни олимпиад и даты (в т.ч. дни открытых дверей) ежегодно обновляются в начале
+              учебного года. Мы следим за изменениями и напомним вам об актуализациях.
             </p>
           </Card>
         </div>
 
         <div className="space-y-3">
           {filteredUniversities.map((university) => (
-              <Card key={university.id} className="p-4 card-hover cursor-pointer" onClick={() => setSelectedUniversity(university.id)}>
+              <Card
+                  key={university.id}
+                  className="p-4 card-hover cursor-pointer"
+                  onClick={() => setSelectedUniversity(university.id)}
+              >
                 <div className="flex items-center gap-3">
                   <div className="text-2xl">{university.logo}</div>
                   <div className="flex-1">
