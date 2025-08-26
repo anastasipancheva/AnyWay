@@ -212,9 +212,10 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             <span>•</span>
                             <span>{profileData.timezone}</span>
                         </div>
-                        <Badge className="mt-2" style={{ backgroundColor: "#F2C4CD", color: "#051F45" }}>
+                        <Badge variant="default" className="mt-2 bg-primary text-white px-3 py-1 rounded-full">
                             Активный участник
                         </Badge>
+
                     </div>
                 )}
             </div>
