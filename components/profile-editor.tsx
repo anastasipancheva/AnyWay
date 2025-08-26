@@ -6,20 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Edit, Save, X } from "lucide-react"
 
 interface ProfileEditableProps {
@@ -35,7 +23,14 @@ type ProfileData = {
     avatar: string
 }
 
+type SettingsData = {
+    deadlineNotifications: boolean
+    weeklyDigest: boolean
+    studyBuddyMessages: boolean
+}
+
 const STORAGE_KEY = "anyway:profile:v1"
+const SETTINGS_STORAGE_KEY = "anyway:settings:v1"
 
 export function ProfileEditable({ user }: ProfileEditableProps) {
     const [isEditing, setIsEditing] = useState(false)
@@ -49,21 +44,33 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
         avatar: "👤",
     }
 
+    const defaultSettings: SettingsData = {
+        deadlineNotifications: true,
+        weeklyDigest: true,
+        studyBuddyMessages: false,
+    }
+
     const [profileData, setProfileData] = useState<ProfileData>(defaultData)
+    const [settings, setSettings] = useState<SettingsData>(defaultSettings)
 
     // --- Загрузка из localStorage при первом монтировании
     useEffect(() => {
         try {
-            const saved =
-                typeof window !== "undefined"
-                    ? localStorage.getItem(STORAGE_KEY)
-                    : null
+            const saved = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null
             if (saved) {
                 const parsed = JSON.parse(saved) as Partial<ProfileData>
                 // Мягкий мёрдж: значения из localStorage перекрывают дефолты
                 setProfileData((prev) => ({ ...prev, ...parsed }))
             } else if (user) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData))
+            }
+
+            const savedSettings = typeof window !== "undefined" ? localStorage.getItem(SETTINGS_STORAGE_KEY) : null
+            if (savedSettings) {
+                const parsedSettings = JSON.parse(savedSettings) as Partial<SettingsData>
+                setSettings((prev) => ({ ...prev, ...parsedSettings }))
+            } else {
+                localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(defaultSettings))
             }
         } catch (e) {
             console.error("Failed to load profile from storage", e)
@@ -91,6 +98,53 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                 setProfileData(defaultData)
             }
         } catch {}
+    }
+
+    const handleSettingToggle = (setting: keyof SettingsData) => {
+        const newSettings = { ...settings, [setting]: !settings[setting] }
+        setSettings(newSettings)
+        try {
+            localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(newSettings))
+        } catch (e) {
+            console.error("Failed to save settings", e)
+        }
+        console.log("[v0] Settings updated:", newSettings)
+    }
+
+    const handleShareApp = async () => {
+        const botLink = "https://t.me/anyway_university_bot"
+        try {
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(botLink)
+                // Show feedback to user
+                if (window.Telegram?.WebApp) {
+                    window.Telegram.WebApp.showAlert("Ссылка скопирована в буфер обмена!")
+                } else {
+                    alert("Ссылка скопирована в буфер обмена!")
+                }
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea")
+                textArea.value = botLink
+                document.body.appendChild(textArea)
+                textArea.select()
+                document.execCommand("copy")
+                document.body.removeChild(textArea)
+                alert("Ссылка скопирована в буфер обмена!")
+            }
+        } catch (err) {
+            console.error("Failed to copy link:", err)
+            alert(`Ссылка на бота: ${botLink}`)
+        }
+    }
+
+    const handleContactSupport = () => {
+        const supportLink = "https://t.me/ylnaaaw"
+        if (window.Telegram?.WebApp) {
+            window.Telegram.WebApp.openTelegramLink(supportLink)
+        } else {
+            window.open(supportLink, "_blank")
+        }
     }
 
     const stats = {
@@ -145,18 +199,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
         "UTC+12 (Камчатка)",
     ]
 
-    const avatars = [
-        "👤",
-        "👨‍🎓",
-        "👩‍🎓",
-        "🧑‍💻",
-        "👨‍🔬",
-        "👩‍🔬",
-        "🤓",
-        "😊",
-        "🚀",
-        "🎯",
-    ]
+    const avatars = ["👤", "👨‍🎓", "👩‍🎓", "🧑‍💻", "👨‍🔬", "👩‍🔬", "🤓", "😊", "🚀", "🎯"]
 
     return (
         <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
@@ -179,14 +222,9 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                     <Edit className="h-3 w-3" />
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent
-                                className="sm:max-w-md"
-                                style={{ backgroundColor: "#F6F7FA" }}
-                            >
+                            <DialogContent className="sm:max-w-md" style={{ backgroundColor: "#F6F7FA" }}>
                                 <DialogHeader>
-                                    <DialogTitle style={{ color: "#051F45" }}>
-                                        Выберите аватар
-                                    </DialogTitle>
+                                    <DialogTitle style={{ color: "#051F45" }}>Выберите аватар</DialogTitle>
                                 </DialogHeader>
                                 <div className="grid grid-cols-5 gap-3 p-4">
                                     {avatars.map((avatar) => (
@@ -195,18 +233,10 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                             variant="outline"
                                             className="w-12 h-12 text-xl p-0 bg-transparent"
                                             style={{
-                                                borderColor:
-                                                    profileData.avatar === avatar
-                                                        ? "#051F45"
-                                                        : "#98A2B3",
-                                                backgroundColor:
-                                                    profileData.avatar === avatar
-                                                        ? "rgba(5, 31, 69, 0.1)"
-                                                        : "white",
+                                                borderColor: profileData.avatar === avatar ? "#051F45" : "#98A2B3",
+                                                backgroundColor: profileData.avatar === avatar ? "rgba(5, 31, 69, 0.1)" : "white",
                                             }}
-                                            onClick={() =>
-                                                setProfileData((prev) => ({ ...prev, avatar }))
-                                            }
+                                            onClick={() => setProfileData((prev) => ({ ...prev, avatar }))}
                                         >
                                             {avatar}
                                         </Button>
@@ -220,11 +250,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                 {isEditing ? (
                     <div className="space-y-3">
                         <div>
-                            <Label
-                                htmlFor="firstName"
-                                className="text-sm font-medium"
-                                style={{ color: "#051F45" }}
-                            >
+                            <Label htmlFor="firstName" className="text-sm font-medium" style={{ color: "#051F45" }}>
                                 Имя
                             </Label>
                             <Input
@@ -241,11 +267,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             />
                         </div>
                         <div>
-                            <Label
-                                htmlFor="age"
-                                className="text-sm font-medium"
-                                style={{ color: "#051F45" }}
-                            >
+                            <Label htmlFor="age" className="text-sm font-medium" style={{ color: "#051F45" }}>
                                 Возраст
                             </Label>
                             <Input
@@ -263,11 +285,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             />
                         </div>
                         <div>
-                            <Label
-                                htmlFor="city"
-                                className="text-sm font-medium"
-                                style={{ color: "#051F45" }}
-                            >
+                            <Label htmlFor="city" className="text-sm font-medium" style={{ color: "#051F45" }}>
                                 Город
                             </Label>
                             <Input
@@ -284,23 +302,14 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             />
                         </div>
                         <div>
-                            <Label
-                                htmlFor="timezone"
-                                className="text-sm font-medium"
-                                style={{ color: "#051F45" }}
-                            >
+                            <Label htmlFor="timezone" className="text-sm font-medium" style={{ color: "#051F45" }}>
                                 Часовой пояс
                             </Label>
                             <Select
                                 value={profileData.timezone}
-                                onValueChange={(value) =>
-                                    setProfileData((prev) => ({ ...prev, timezone: value }))
-                                }
+                                onValueChange={(value) => setProfileData((prev) => ({ ...prev, timezone: value }))}
                             >
-                                <SelectTrigger
-                                    className="mt-1"
-                                    style={{ borderColor: "#98A2B3" }}
-                                >
+                                <SelectTrigger className="mt-1" style={{ borderColor: "#98A2B3" }}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -313,11 +322,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             </Select>
                         </div>
                         <div className="flex gap-2 pt-2">
-                            <Button
-                                onClick={handleSave}
-                                className="flex-1"
-                                style={{ backgroundColor: "#051F45", color: "white" }}
-                            >
+                            <Button onClick={handleSave} className="flex-1" style={{ backgroundColor: "#051F45", color: "white" }}>
                                 <Save className="h-4 w-4 mr-2" /> Сохранить
                             </Button>
                             <Button
@@ -349,28 +354,20 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                         <p className="text-sm" style={{ color: "#98A2B3" }}>
                             @{profileData.username}
                         </p>
-                        <div
-                            className="flex items-center justify-center gap-4 mt-2 text-sm"
-                            style={{ color: "#98A2B3" }}
-                        >
+                        <div className="flex items-center justify-center gap-4 mt-2 text-sm" style={{ color: "#98A2B3" }}>
                             <span>{profileData.age} лет</span>
                             <span>•</span>
                             <span>{profileData.city}</span>
                             <span>•</span>
                             <span>{profileData.timezone}</span>
                         </div>
-                        <Badge className="mt-2 bg-primary !text-white px-3 py-1 rounded-full">
-                            Активный участник
-                        </Badge>
+                        <Badge className="mt-2 bg-primary !text-white px-3 py-1 rounded-full">Активный участник</Badge>
                     </div>
                 )}
             </div>
 
             {/* Statistics */}
-            <Card
-                className="p-4"
-                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
-            >
+            <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
                 <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
                     Ваша статистика
                 </h3>
@@ -411,10 +408,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             </Card>
 
             {/* Achievements */}
-            <Card
-                className="p-4"
-                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
-            >
+            <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
                 <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
                     Достижения
                 </h3>
@@ -426,38 +420,21 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                 achievement.earned ? "bg-accent/20" : "bg-neutral-gray/10"
                             }`}
                         >
-                            <div
-                                className={`text-2xl ${
-                                    achievement.earned ? "" : "opacity-60"
-                                }`}
-                            >
-                                {achievement.icon}
-                            </div>
+                            <div className={`text-2xl ${achievement.earned ? "" : "opacity-60"}`}>{achievement.icon}</div>
                             <div className="flex-1">
-                                <h4
-                                    className={`font-medium ${
-                                        achievement.earned ? "text-primary" : "text-primary/70"
-                                    }`}
-                                >
+                                <h4 className={`font-medium ${achievement.earned ? "text-primary" : "text-primary/70"}`}>
                                     {achievement.title}
                                 </h4>
-                                <p className="text-xs text-neutral-gray">
-                                    {achievement.description}
-                                </p>
+                                <p className="text-xs text-neutral-gray">{achievement.description}</p>
                             </div>
-                            {achievement.earned && (
-                                <Badge className="bg-primary !text-white">✓</Badge>
-                            )}
+                            {achievement.earned && <Badge className="bg-primary !text-white">✓</Badge>}
                         </div>
                     ))}
                 </div>
             </Card>
 
             {/* Settings */}
-            <Card
-                className="p-4"
-                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
-            >
+            <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
                 <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
                     Настройки
                 </h3>
@@ -466,34 +443,49 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             <span className="text-sm" style={{ color: "#051F45" }}>
               Уведомления о дедлайнах
             </span>
-                        <div
-                            className="w-12 h-6 rounded-full flex items-center p-1"
-                            style={{ backgroundColor: "#051F45" }}
+                        <button
+                            onClick={() => handleSettingToggle("deadlineNotifications")}
+                            className={`w-12 h-6 rounded-full flex items-center p-1 transition-colors ${
+                                settings.deadlineNotifications ? "justify-end" : "justify-start"
+                            }`}
+                            style={{
+                                backgroundColor: settings.deadlineNotifications ? "#051F45" : "rgba(152, 162, 179, 0.3)",
+                            }}
                         >
-                            <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
-                        </div>
+                            <div className="w-4 h-4 bg-white rounded-full transition-transform"></div>
+                        </button>
                     </div>
                     <div className="flex items-center justify-between">
             <span className="text-sm" style={{ color: "#051F45" }}>
               Еженедельная сводка
             </span>
-                        <div
-                            className="w-12 h-6 rounded-full flex items-center p-1"
-                            style={{ backgroundColor: "#051F45" }}
+                        <button
+                            onClick={() => handleSettingToggle("weeklyDigest")}
+                            className={`w-12 h-6 rounded-full flex items-center p-1 transition-colors ${
+                                settings.weeklyDigest ? "justify-end" : "justify-start"
+                            }`}
+                            style={{
+                                backgroundColor: settings.weeklyDigest ? "#051F45" : "rgba(152, 162, 179, 0.3)",
+                            }}
                         >
-                            <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
-                        </div>
+                            <div className="w-4 h-4 bg-white rounded-full transition-transform"></div>
+                        </button>
                     </div>
                     <div className="flex items-center justify-between">
             <span className="text-sm" style={{ color: "#051F45" }}>
               Новые сообщения StudyBuddy
             </span>
-                        <div
-                            className="w-12 h-6 rounded-full flex items-center p-1"
-                            style={{ backgroundColor: "rgba(152, 162, 179, 0.3)" }}
+                        <button
+                            onClick={() => handleSettingToggle("studyBuddyMessages")}
+                            className={`w-12 h-6 rounded-full flex items-center p-1 transition-colors ${
+                                settings.studyBuddyMessages ? "justify-end" : "justify-start"
+                            }`}
+                            style={{
+                                backgroundColor: settings.studyBuddyMessages ? "#051F45" : "rgba(152, 162, 179, 0.3)",
+                            }}
                         >
-                            <div className="w-4 h-4 bg-white rounded-full"></div>
-                        </div>
+                            <div className="w-4 h-4 bg-white rounded-full transition-transform"></div>
+                        </button>
                     </div>
                 </div>
             </Card>
@@ -501,6 +493,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             {/* Actions */}
             <div className="space-y-2">
                 <Button
+                    onClick={handleShareApp}
                     variant="outline"
                     className="w-full bg-transparent"
                     style={{ color: "#051F45", borderColor: "#051F45" }}
@@ -508,17 +501,14 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                     Поделиться приложением
                 </Button>
                 <Button
+                    onClick={handleContactSupport}
                     variant="outline"
                     className="w-full bg-transparent"
                     style={{ color: "#051F45", borderColor: "#051F45" }}
                 >
                     Связаться с поддержкой
                 </Button>
-                <Button
-                    variant="ghost"
-                    className="w-full"
-                    style={{ color: "#98A2B3" }}
-                >
+                <Button variant="ghost" className="w-full" style={{ color: "#98A2B3" }}>
                     О приложении
                 </Button>
             </div>

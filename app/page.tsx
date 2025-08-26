@@ -2,17 +2,55 @@
 
 import { useState, useEffect } from "react"
 import { Navigation } from "@/components/navigation"
-import { UniversitySelection } from "@/components/university-selection"
-import { Calendar } from "@/components/calendar"
-import { StudyBuddy } from "@/components/study-buddy"
-import { UniversityChats } from "@/components/university-chats"
 import { ProfileEditable } from "@/components/profile-editable"
-import type { CalendarEvent } from "@/components/event-modal"
+
+function UniversitySelection() {
+  return (
+      <div className="p-4 text-center" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
+        <h2 className="text-xl font-bold mb-4" style={{ color: "#051F45" }}>
+          Выбор университетов
+        </h2>
+        <p style={{ color: "#98A2B3" }}>Раздел в разработке</p>
+      </div>
+  )
+}
+
+function Calendar() {
+  return (
+      <div className="p-4 text-center" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
+        <h2 className="text-xl font-bold mb-4" style={{ color: "#051F45" }}>
+          Календарь
+        </h2>
+        <p style={{ color: "#98A2B3" }}>Раздел в разработке</p>
+      </div>
+  )
+}
+
+function StudyBuddy() {
+  return (
+      <div className="p-4 text-center" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
+        <h2 className="text-xl font-bold mb-4" style={{ color: "#051F45" }}>
+          StudyBuddy
+        </h2>
+        <p style={{ color: "#98A2B3" }}>Раздел в разработке</p>
+      </div>
+  )
+}
+
+function UniversityChats() {
+  return (
+      <div className="p-4 text-center" style={{ backgroundColor: "#F6F7FA", minHeight: "400px" }}>
+        <h2 className="text-xl font-bold mb-4" style={{ color: "#051F45" }}>
+          Чаты университетов
+        </h2>
+        <p style={{ color: "#98A2B3" }}>Раздел в разработке</p>
+      </div>
+  )
+}
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("profile")
   const [user, setUser] = useState<any>(null)
-  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([])
 
   useEffect(() => {
     // Initialize Telegram WebApp
@@ -32,21 +70,16 @@ export default function Home() {
     }
   }, [])
 
-  const handleAddToCalendar = (event: CalendarEvent) => {
-    console.log("[v0] Home received event to add to calendar:", event)
-    setCalendarEvents((prev) => [...prev, event])
-  }
-
   const renderContent = () => {
     switch (activeTab) {
       case "profile":
         return <ProfileEditable user={user} />
       case "universities":
-        return <UniversitySelection onAddToCalendar={handleAddToCalendar} />
+        return <UniversitySelection />
       case "calendar":
-        return <Calendar externalEvents={calendarEvents} />
+        return <Calendar />
       case "buddy":
-        return <StudyBuddy user={user} />
+        return <StudyBuddy />
       case "chats":
         return <UniversityChats />
       default:
@@ -55,7 +88,7 @@ export default function Home() {
   }
 
   return (
-      <div className="telegram-viewport flex flex-col">
+      <div className="telegram-viewport flex flex-col min-h-screen">
         <header className="bg-primary text-white p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
