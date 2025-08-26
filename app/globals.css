@@ -85,7 +85,7 @@
 
 @layer base {
   * {
-    @apply border-gray-200 outline-ring/50;
+    @apply border-gray-200 outline-ring;
   }
   body {
     @apply bg-background text-foreground;
