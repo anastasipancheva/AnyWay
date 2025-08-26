@@ -1,29 +1,15 @@
 "use client"
 
-import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { SelfTracking } from "./self-tracking"
 
 interface ProfileProps {
   user: any
 }
 
-const TG_BOT_URL = "https://t.me/anyway_university_bot"
-const TG_SUPPORT = "https://t.me/ylnaaaw"
-
 export function Profile({ user }: ProfileProps) {
-  const [aboutOpen, setAboutOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-
   const stats = {
     selectedOlympiads: 3,
     calendarEvents: 12,
@@ -38,24 +24,8 @@ export function Profile({ user }: ProfileProps) {
     { id: 4, title: "Наставник", description: "Помогли 5+ участникам", icon: "🤝", earned: false },
   ]
 
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(TG_BOT_URL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // фоллбэк — просто открыть бота
-      window.open(TG_BOT_URL, "_blank", "noopener,noreferrer")
-    }
-  }
-
-  const handleSupport = () => {
-    window.open(TG_SUPPORT, "_blank", "noopener,noreferrer")
-  }
-
   return (
       <div className="p-4 space-y-4">
-        {/* Header */}
         <div className="text-center mb-6">
           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
             <span className="text-white text-2xl">👤</span>
@@ -64,7 +34,7 @@ export function Profile({ user }: ProfileProps) {
             {user?.first_name || "Пользователь"}
           </h2>
           <p className="text-sm text-neutral-gray">@{user?.username || "username"}</p>
-          <Badge className="mt-2 bg-primary text-white px-3 py-1 rounded-full">
+          <Badge className="mt-2 bg-primary !text-white px-3 py-1 rounded-full">
             Активный участник
           </Badge>
         </div>
@@ -130,7 +100,7 @@ export function Profile({ user }: ProfileProps) {
           </div>
         </Card>
 
-        {/* Settings (пока статичные переключатели) */}
+        {/* Settings */}
         <Card className="p-4">
           <h3 className="font-semibold text-primary mb-3">Настройки</h3>
           <div className="space-y-3">
@@ -157,59 +127,15 @@ export function Profile({ user }: ProfileProps) {
 
         {/* Actions */}
         <div className="space-y-2">
-          <Button
-              variant="outline"
-              className="w-full text-primary border-primary bg-transparent"
-              onClick={handleShare}
-          >
-            {copied ? "Скопировано! ✨" : "Поделиться приложением"}
+          <Button variant="outline" className="w-full text-primary border-primary bg-transparent">
+            Поделиться приложением
           </Button>
-
-          <Button
-              variant="outline"
-              className="w-full text-primary border-primary bg-transparent"
-              onClick={handleSupport}
-          >
+          <Button variant="outline" className="w-full text-primary border-primary bg-transparent">
             Связаться с поддержкой
           </Button>
-
-          <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
-            <DialogTrigger asChild>
-              <Button variant="ghost" className="w-full text-neutral-gray">
-                О приложении
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-2xl">
-              <DialogHeader>
-                <DialogTitle className="text-primary">AnyWay — поступай и береги себя</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-3 text-sm text-primary">
-                <p>
-                  В рамках Стартап Академии Сколково мы разрабатываем образовательный проект для школьников,
-                  объединяющий заботу о ментальном здоровье и траекторию поступления. AnyWay — о том, как поступить
-                  в вуз мечты и не сойти с ума в процессе.
-                </p>
-                <p>
-                  Для реализации проекта нам необходим разработчик Mini App в Telegram. Пользователи смогут выбрать вуз
-                  и направление, а мы расскажем о всех олимпиадах и прочих конкурсах для преимущественного поступления.
-                </p>
-                <p>
-                  В приложении можно прочитать краткую информацию про выбранную олимпиаду: особенности, дедлайны, способы
-                  подготовки. Выбранные олимпиады автоматически попадают в персональный календарь с ключевыми датами
-                  (от регистрации до заключительного этапа), а сервис будет напоминать про дедлайны.
-                </p>
-                <p>
-                  Через Mini App можно подключиться к сообществу олимпиадников — закрытый Telegram канал-папка с подразделениями
-                  на вузы. У каждого чата будет куратор-студент, который делится «внутрянкой» вуза, публикует видео и отвечает
-                  на вопросы.
-                </p>
-                <p>
-                  Также мы будем предоставлять школьникам возможность найти напарника для учёбы: анкета с ответами на вопросы
-                  и ником в Telegram — другие пользователи смогут просматривать эту анкету и писать друг другу.
-                </p>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button variant="ghost" className="w-full text-neutral-gray">
+            О приложении
+          </Button>
         </div>
 
         <div className="text-center pt-4">

@@ -6,8 +6,20 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 import { Edit, Save, X } from "lucide-react"
 
 interface ProfileEditableProps {
@@ -24,13 +36,9 @@ type ProfileData = {
 }
 
 const STORAGE_KEY = "anyway:profile:v1"
-const TG_BOT_URL = "https://t.me/anyway_university_bot"
-const TG_SUPPORT = "https://t.me/ylnaaaw"
 
 export function ProfileEditable({ user }: ProfileEditableProps) {
     const [isEditing, setIsEditing] = useState(false)
-    const [aboutOpen, setAboutOpen] = useState(false)
-    const [copied, setCopied] = useState(false)
 
     const defaultData: ProfileData = {
         firstName: user?.first_name || "Пользователь",
@@ -43,12 +51,16 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
 
     const [profileData, setProfileData] = useState<ProfileData>(defaultData)
 
-    // Загрузка из localStorage при первом монтировании
+    // --- Загрузка из localStorage при первом монтировании
     useEffect(() => {
         try {
-            const saved = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null
+            const saved =
+                typeof window !== "undefined"
+                    ? localStorage.getItem(STORAGE_KEY)
+                    : null
             if (saved) {
                 const parsed = JSON.parse(saved) as Partial<ProfileData>
+                // Мягкий мёрдж: значения из localStorage перекрывают дефолты
                 setProfileData((prev) => ({ ...prev, ...parsed }))
             } else if (user) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData))
@@ -66,6 +78,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             console.error("Failed to save profile", e)
         }
         setIsEditing(false)
+        console.log("[v0] Profile saved:", profileData)
     }
 
     const handleCancel = () => {
@@ -80,20 +93,6 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
         } catch {}
     }
 
-    const handleShare = async () => {
-        try {
-            await navigator.clipboard.writeText(TG_BOT_URL)
-            setCopied(true)
-            setTimeout(() => setCopied(false), 2000)
-        } catch {
-            window.open(TG_BOT_URL, "_blank")
-        }
-    }
-
-    const handleSupport = () => {
-        window.open(TG_SUPPORT, "_blank")
-    }
-
     const stats = {
         selectedOlympiads: 3,
         calendarEvents: 12,
@@ -102,10 +101,34 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
     }
 
     const achievements = [
-        { id: 1, title: "Первые шаги", description: "Выбрали первую олимпиаду", icon: "🎯", earned: true },
-        { id: 2, title: "Планировщик", description: "Добавили 5+ событий в календарь", icon: "📅", earned: true },
-        { id: 3, title: "Социальная бабочка", description: "Присоединились к 3+ чатам", icon: "💬", earned: false },
-        { id: 4, title: "Наставник", description: "Помогли 5+ участникам", icon: "🤝", earned: false },
+        {
+            id: 1,
+            title: "Первые шаги",
+            description: "Выбрали первую олимпиаду",
+            icon: "🎯",
+            earned: true,
+        },
+        {
+            id: 2,
+            title: "Планировщик",
+            description: "Добавили 5+ событий в календарь",
+            icon: "📅",
+            earned: true,
+        },
+        {
+            id: 3,
+            title: "Социальная бабочка",
+            description: "Присоединились к 3+ чатам",
+            icon: "💬",
+            earned: false,
+        },
+        {
+            id: 4,
+            title: "Наставник",
+            description: "Помогли 5+ участникам",
+            icon: "🤝",
+            earned: false,
+        },
     ]
 
     const timezones = [
@@ -122,11 +145,21 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
         "UTC+12 (Камчатка)",
     ]
 
-    const avatars = ["👤", "👨‍🎓", "👩‍🎓", "🧑‍💻", "👨‍🔬", "👩‍🔬", "🤓", "😊", "🚀", "🎯"]
+    const avatars = [
+        "👤",
+        "👨‍🎓",
+        "👩‍🎓",
+        "🧑‍💻",
+        "👨‍🔬",
+        "👩‍🔬",
+        "🤓",
+        "😊",
+        "🚀",
+        "🎯",
+    ]
 
     return (
         <div className="p-4 space-y-4" style={{ backgroundColor: "#F6F7FA" }}>
-            {/* Profile header */}
             <div className="text-center mb-6">
                 <div className="relative inline-block">
                     <div
@@ -146,9 +179,14 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                     <Edit className="h-3 w-3" />
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-md" style={{ backgroundColor: "#F6F7FA" }}>
+                            <DialogContent
+                                className="sm:max-w-md"
+                                style={{ backgroundColor: "#F6F7FA" }}
+                            >
                                 <DialogHeader>
-                                    <DialogTitle style={{ color: "#051F45" }}>Выберите аватар</DialogTitle>
+                                    <DialogTitle style={{ color: "#051F45" }}>
+                                        Выберите аватар
+                                    </DialogTitle>
                                 </DialogHeader>
                                 <div className="grid grid-cols-5 gap-3 p-4">
                                     {avatars.map((avatar) => (
@@ -157,11 +195,18 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                             variant="outline"
                                             className="w-12 h-12 text-xl p-0 bg-transparent"
                                             style={{
-                                                borderColor: profileData.avatar === avatar ? "#051F45" : "#98A2B3",
+                                                borderColor:
+                                                    profileData.avatar === avatar
+                                                        ? "#051F45"
+                                                        : "#98A2B3",
                                                 backgroundColor:
-                                                    profileData.avatar === avatar ? "rgba(5, 31, 69, 0.1)" : "white",
+                                                    profileData.avatar === avatar
+                                                        ? "rgba(5, 31, 69, 0.1)"
+                                                        : "white",
                                             }}
-                                            onClick={() => setProfileData((prev) => ({ ...prev, avatar }))}
+                                            onClick={() =>
+                                                setProfileData((prev) => ({ ...prev, avatar }))
+                                            }
                                         >
                                             {avatar}
                                         </Button>
@@ -175,51 +220,87 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                 {isEditing ? (
                     <div className="space-y-3">
                         <div>
-                            <Label htmlFor="firstName" className="text-sm font-medium" style={{ color: "#051F45" }}>
+                            <Label
+                                htmlFor="firstName"
+                                className="text-sm font-medium"
+                                style={{ color: "#051F45" }}
+                            >
                                 Имя
                             </Label>
                             <Input
                                 id="firstName"
                                 value={profileData.firstName}
-                                onChange={(e) => setProfileData((prev) => ({ ...prev, firstName: e.target.value }))}
+                                onChange={(e) =>
+                                    setProfileData((prev) => ({
+                                        ...prev,
+                                        firstName: e.target.value,
+                                    }))
+                                }
                                 className="mt-1"
                                 style={{ borderColor: "#98A2B3" }}
                             />
                         </div>
                         <div>
-                            <Label htmlFor="age" className="text-sm font-medium" style={{ color: "#051F45" }}>
+                            <Label
+                                htmlFor="age"
+                                className="text-sm font-medium"
+                                style={{ color: "#051F45" }}
+                            >
                                 Возраст
                             </Label>
                             <Input
                                 id="age"
                                 type="number"
                                 value={profileData.age}
-                                onChange={(e) => setProfileData((prev) => ({ ...prev, age: e.target.value }))}
+                                onChange={(e) =>
+                                    setProfileData((prev) => ({
+                                        ...prev,
+                                        age: e.target.value,
+                                    }))
+                                }
                                 className="mt-1"
                                 style={{ borderColor: "#98A2B3" }}
                             />
                         </div>
                         <div>
-                            <Label htmlFor="city" className="text-sm font-medium" style={{ color: "#051F45" }}>
+                            <Label
+                                htmlFor="city"
+                                className="text-sm font-medium"
+                                style={{ color: "#051F45" }}
+                            >
                                 Город
                             </Label>
                             <Input
                                 id="city"
                                 value={profileData.city}
-                                onChange={(e) => setProfileData((prev) => ({ ...prev, city: e.target.value }))}
+                                onChange={(e) =>
+                                    setProfileData((prev) => ({
+                                        ...prev,
+                                        city: e.target.value,
+                                    }))
+                                }
                                 className="mt-1"
                                 style={{ borderColor: "#98A2B3" }}
                             />
                         </div>
                         <div>
-                            <Label htmlFor="timezone" className="text-sm font-medium" style={{ color: "#051F45" }}>
+                            <Label
+                                htmlFor="timezone"
+                                className="text-sm font-medium"
+                                style={{ color: "#051F45" }}
+                            >
                                 Часовой пояс
                             </Label>
                             <Select
                                 value={profileData.timezone}
-                                onValueChange={(value) => setProfileData((prev) => ({ ...prev, timezone: value }))}
+                                onValueChange={(value) =>
+                                    setProfileData((prev) => ({ ...prev, timezone: value }))
+                                }
                             >
-                                <SelectTrigger className="mt-1" style={{ borderColor: "#98A2B3" }}>
+                                <SelectTrigger
+                                    className="mt-1"
+                                    style={{ borderColor: "#98A2B3" }}
+                                >
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -237,8 +318,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                 className="flex-1"
                                 style={{ backgroundColor: "#051F45", color: "white" }}
                             >
-                                <Save className="h-4 w-4 mr-2" />
-                                Сохранить
+                                <Save className="h-4 w-4 mr-2" /> Сохранить
                             </Button>
                             <Button
                                 onClick={handleCancel}
@@ -246,8 +326,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                 className="flex-1 bg-transparent"
                                 style={{ borderColor: "#98A2B3", color: "#98A2B3" }}
                             >
-                                <X className="h-4 w-4 mr-2" />
-                                Отмена
+                                <X className="h-4 w-4 mr-2" /> Отмена
                             </Button>
                         </div>
                     </div>
@@ -280,7 +359,7 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                             <span>•</span>
                             <span>{profileData.timezone}</span>
                         </div>
-                        <Badge variant="default" className="mt-2 bg-primary text-white px-3 py-1 rounded-full">
+                        <Badge className="mt-2 bg-primary !text-white px-3 py-1 rounded-full">
                             Активный участник
                         </Badge>
                     </div>
@@ -288,7 +367,10 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             </div>
 
             {/* Statistics */}
-            <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
+            <Card
+                className="p-4"
+                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+            >
                 <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
                     Ваша статистика
                 </h3>
@@ -329,7 +411,10 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
             </Card>
 
             {/* Achievements */}
-            <Card className="p-4" style={{ backgroundColor: "white", borderColor: "#98A2B3" }}>
+            <Card
+                className="p-4"
+                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+            >
                 <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
                     Достижения
                 </h3>
@@ -341,7 +426,11 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                 achievement.earned ? "bg-accent/20" : "bg-neutral-gray/10"
                             }`}
                         >
-                            <div className={`text-2xl ${achievement.earned ? "" : "opacity-60"}`}>
+                            <div
+                                className={`text-2xl ${
+                                    achievement.earned ? "" : "opacity-60"
+                                }`}
+                            >
                                 {achievement.icon}
                             </div>
                             <div className="flex-1">
@@ -352,11 +441,60 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                                 >
                                     {achievement.title}
                                 </h4>
-                                <p className="text-xs text-neutral-gray">{achievement.description}</p>
+                                <p className="text-xs text-neutral-gray">
+                                    {achievement.description}
+                                </p>
                             </div>
-                            {achievement.earned && <Badge className="bg-primary !text-white">✓</Badge>}
+                            {achievement.earned && (
+                                <Badge className="bg-primary !text-white">✓</Badge>
+                            )}
                         </div>
                     ))}
+                </div>
+            </Card>
+
+            {/* Settings */}
+            <Card
+                className="p-4"
+                style={{ backgroundColor: "white", borderColor: "#98A2B3" }}
+            >
+                <h3 className="font-semibold mb-3" style={{ color: "#051F45" }}>
+                    Настройки
+                </h3>
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+            <span className="text-sm" style={{ color: "#051F45" }}>
+              Уведомления о дедлайнах
+            </span>
+                        <div
+                            className="w-12 h-6 rounded-full flex items-center p-1"
+                            style={{ backgroundColor: "#051F45" }}
+                        >
+                            <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+            <span className="text-sm" style={{ color: "#051F45" }}>
+              Еженедельная сводка
+            </span>
+                        <div
+                            className="w-12 h-6 rounded-full flex items-center p-1"
+                            style={{ backgroundColor: "#051F45" }}
+                        >
+                            <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+            <span className="text-sm" style={{ color: "#051F45" }}>
+              Новые сообщения StudyBuddy
+            </span>
+                        <div
+                            className="w-12 h-6 rounded-full flex items-center p-1"
+                            style={{ backgroundColor: "rgba(152, 162, 179, 0.3)" }}
+                        >
+                            <div className="w-4 h-4 bg-white rounded-full"></div>
+                        </div>
+                    </div>
                 </div>
             </Card>
 
@@ -366,61 +504,23 @@ export function ProfileEditable({ user }: ProfileEditableProps) {
                     variant="outline"
                     className="w-full bg-transparent"
                     style={{ color: "#051F45", borderColor: "#051F45" }}
-                    onClick={handleShare}
                 >
-                    {copied ? "Скопировано! ✨" : "Поделиться приложением"}
+                    Поделиться приложением
                 </Button>
-
                 <Button
                     variant="outline"
                     className="w-full bg-transparent"
                     style={{ color: "#051F45", borderColor: "#051F45" }}
-                    onClick={handleSupport}
                 >
                     Связаться с поддержкой
                 </Button>
-
-                <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
-                    <DialogTrigger asChild>
-                        <Button variant="ghost" className="w-full" style={{ color: "#98A2B3" }}>
-                            О приложении
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-2xl" style={{ backgroundColor: "#F6F7FA" }}>
-                        <DialogHeader>
-                            <DialogTitle style={{ color: "#051F45" }}>AnyWay — поступай и береги себя</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-3 text-sm" style={{ color: "#051F45" }}>
-                            <p>
-                                В рамках Стартап Академии Сколково мы разрабатываем образовательный проект для школьников,
-                                объединяющий заботу о ментальном здоровье и траекторию поступления. AnyWay — о том, как поступить
-                                в вуз мечты и не сойти с ума в процессе.
-                            </p>
-                            <p>
-                                Пользователи смогут выбрать вуз и направление, а мы расскажем о всех олимпиадах и прочих конкурсах
-                                для преимущественного поступления. Выбранные олимпиады автоматически попадут в календарь с ключевыми
-                                датами, а сервис будет напоминать про дедлайны.
-                            </p>
-                            <p>
-                                Через Mini App можно подключиться к сообществу олимпиадников — закрытый Telegram канал-папка с
-                                подразделениями на вузы. У каждого чата будет куратор-студент, который делится «внутрянкой» вуза,
-                                публикует видео и отвечает на вопросы.
-                            </p>
-                            <p>
-                                Также мы помогаем найти напарника для учёбы: анкета с ответами на вопросы и ником в Telegram — по ней
-                                пользователи смогут находить друг друга и общаться.
-                            </p>
-                            <p className="font-medium">
-                                Смогла бы ты сделать такое приложение и если да — за какую стоимость? 🥺
-                            </p>
-                        </div>
-                        <div className="flex justify-end">
-                            <Button onClick={() => setAboutOpen(false)} style={{ backgroundColor: "#051F45", color: "#fff" }}>
-                                Понятно
-                            </Button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
+                <Button
+                    variant="ghost"
+                    className="w-full"
+                    style={{ color: "#98A2B3" }}
+                >
+                    О приложении
+                </Button>
             </div>
 
             <div className="text-center pt-4">
