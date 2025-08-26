@@ -1,74 +1,91 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import type { CalendarEvent } from "./event-modal"
 
-const events = [
+const initialEvents: CalendarEvent[] = [
   {
     id: 1,
-    title: "Регистрация на ВсОШ по математике",
+    title: "Регистрация: ВсОШ по математике",
     date: "2025-09-01",
     type: "registration",
     olympiad: "ВсОШ Математика",
     status: "upcoming",
+    subject: "Математика",
+    level: "ВсОШ",
   },
   {
     id: 2,
-    title: "Отборочный этап ММО",
+    title: "Отборочный этап: Московская математическая олимпиада",
     date: "2025-11-01",
     type: "qualifying",
     olympiad: "Московская математическая олимпиада",
     status: "upcoming",
+    subject: "Математика",
+    level: "1 уровень",
   },
   {
     id: 3,
-    title: "Регистрация на ВсОШ по физике",
+    title: "Регистрация: ВсОШ по физике",
     date: "2025-09-01",
     type: "registration",
     olympiad: "ВсОШ Физика",
     status: "upcoming",
+    subject: "Физика",
+    level: "ВсОШ",
   },
   {
     id: 4,
-    title: "Заключительный этап ВсОШ физика",
+    title: "Заключительный этап: ВсОШ физика",
     date: "2025-04-05",
     type: "final",
     olympiad: "ВсОШ Физика",
     status: "upcoming",
+    subject: "Физика",
+    level: "ВсОШ",
   },
   {
     id: 5,
-    title: "Отборочный этап по информатике",
+    title: "Отборочный этап: ВсОШ по информатике",
     date: "2025-10-25",
     type: "qualifying",
     olympiad: "ВсОШ Информатика",
     status: "upcoming",
+    subject: "Информатика",
+    level: "ВсОШ",
   },
   {
     id: 6,
-    title: "Заключительный этап по математике",
+    title: "Заключительный этап: ВсОШ по математике",
     date: "2025-03-15",
     type: "final",
     olympiad: "ВсОШ Математика",
     status: "upcoming",
+    subject: "Математика",
+    level: "ВсОШ",
   },
   {
     id: 7,
-    title: "Регистрация на Турнир городов",
+    title: "Регистрация: Турнир городов",
     date: "2025-09-20",
     type: "registration",
     olympiad: "Турнир городов",
     status: "upcoming",
+    subject: "Математика",
+    level: "1 уровень",
   },
   {
     id: 8,
-    title: "Заключительный этап по химии",
+    title: "Заключительный этап: ВсОШ по химии",
     date: "2025-04-15",
     type: "final",
     olympiad: "ВсОШ Химия",
     status: "upcoming",
+    subject: "Химия",
+    level: "ВсОШ",
   },
 ]
 
@@ -87,9 +104,32 @@ const months = [
   "Декабрь",
 ]
 
-export function Calendar() {
+interface CalendarProps {
+  onAddEvent?: (event: CalendarEvent) => void
+  externalEvents?: CalendarEvent[]
+}
+
+export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
+  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents)
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
-  const [selectedYear] = useState(2025) // Updated to 2025
+  const [selectedYear] = useState(2025)
+
+  useEffect(() => {
+    if (externalEvents.length > 0) {
+      setEvents((prev) => {
+        const existingIds = prev.map((e) => e.id)
+        const newEvents = externalEvents.filter((e) => !existingIds.includes(e.id))
+        return [...prev, ...newEvents]
+      })
+    }
+  }, [externalEvents])
+
+  const addEvent = (newEvent: CalendarEvent) => {
+    setEvents((prev) => [...prev, newEvent])
+    if (onAddEvent) {
+      onAddEvent(newEvent)
+    }
+  }
 
   const getEventTypeColor = (type: string) => {
     switch (type) {
@@ -121,17 +161,8 @@ export function Calendar() {
     }
   }
 
-  const addToCalendar = (event: (typeof events)[0]) => {
-    const date = new Date(event.date)
-    const title = event.title
-    const details = `Олимпиада: ${event.olympiad}\nТип: ${getEventTypeLabel(event.type)}`
-
-    const startDate = date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
-    const endDate = new Date(date.getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
-
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}`
-
-    window.open(googleCalendarUrl, "_blank")
+  const removeEvent = (eventId: number) => {
+    setEvents((prev) => prev.filter((e) => e.id !== eventId))
   }
 
   const filteredEvents = events.filter((event) => {
@@ -232,7 +263,7 @@ export function Calendar() {
         <div className="space-y-4">
           <h3 className="font-bold text-xl text-primary flex items-center gap-2">
             <span className="w-3 h-3 bg-accent rounded-full"></span>
-            События в {months[selectedMonth].toLowerCase()}
+            События в {months[selectedMonth].toLowerCase()} ({filteredEvents.length})
           </h3>
           {filteredEvents.length === 0 ? (
               <Card className="p-8 text-center shadow-lg border-0 bg-white/80 backdrop-blur-sm">
@@ -251,7 +282,19 @@ export function Calendar() {
                         {getEventTypeLabel(event.type)}
                       </Badge>
                     </div>
-                    <p className="text-sm text-neutral-gray mb-2 font-medium">{event.olympiad}</p>
+                    <div className="flex items-center gap-4 mb-2">
+                      <p className="text-sm text-neutral-gray font-medium">{event.olympiad}</p>
+                      {event.subject && (
+                          <Badge variant="outline" className="text-xs">
+                            {event.subject}
+                          </Badge>
+                      )}
+                      {event.level && (
+                          <Badge variant="outline" className="text-xs">
+                            {event.level}
+                          </Badge>
+                      )}
+                    </div>
                     <p className="text-sm text-neutral-gray mb-4">
                       {new Date(event.date).toLocaleDateString("ru", {
                         weekday: "long",
@@ -263,19 +306,17 @@ export function Calendar() {
                     <div className="flex gap-3">
                       <Button
                           size="sm"
-                          className="bg-gradient-to-r from-primary to-primary/80 text-white hover:from-primary/90 hover:to-primary/70 font-semibold"
-                          onClick={() => addToCalendar(event)}
-                      >
-                        📅 Добавить в календарь
-                      </Button>
-                      <Button
-                          size="sm"
                           variant="outline"
                           className="text-sm border-primary/20 hover:bg-primary/5 bg-transparent"
                       >
                         🔔 Напомнить
                       </Button>
-                      <Button size="sm" variant="ghost" className="text-sm text-red-500 hover:bg-red-50">
+                      <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-sm text-red-500 hover:bg-red-50"
+                          onClick={() => removeEvent(event.id)}
+                      >
                         🗑️ Удалить
                       </Button>
                     </div>
@@ -286,3 +327,5 @@ export function Calendar() {
       </div>
   )
 }
+
+export type { CalendarEvent }
