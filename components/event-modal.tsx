@@ -80,6 +80,7 @@ export function EventModal({
     const Icon = eventInfo.icon
 
     const handleAddToCalendar = () => {
+        console.log("[v0] Adding event to calendar:", { olympiadName, eventType, date, subject, level })
         setIsAdding(true)
 
         const newEvent: CalendarEvent = {
@@ -93,7 +94,9 @@ export function EventModal({
             level: typeof level === "number" ? `${level} уровень` : level,
         }
 
+        console.log("[v0] Created new event:", newEvent)
         onAddToCalendar(newEvent)
+        console.log("[v0] Called onAddToCalendar callback")
 
         setTimeout(() => {
             setIsAdding(false)

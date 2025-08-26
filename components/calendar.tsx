@@ -115,16 +115,22 @@ export function Calendar({ onAddEvent, externalEvents = [] }: CalendarProps) {
   const [selectedYear] = useState(2025)
 
   useEffect(() => {
+    console.log("[v0] Calendar received external events:", externalEvents)
     if (externalEvents.length > 0) {
       setEvents((prev) => {
-        const existingIds = prev.map((e) => e.id)
-        const newEvents = externalEvents.filter((e) => !existingIds.includes(e.id))
-        return [...prev, ...newEvents]
+        const existingIds = new Set(prev.map((e) => e.id))
+        const newEvents = externalEvents.filter((e) => !existingIds.has(e.id))
+        console.log("[v0] Adding new events to calendar:", newEvents)
+        if (newEvents.length > 0) {
+          return [...prev, ...newEvents]
+        }
+        return prev
       })
     }
   }, [externalEvents])
 
   const addEvent = (newEvent: CalendarEvent) => {
+    console.log("[v0] Adding event directly:", newEvent)
     setEvents((prev) => [...prev, newEvent])
     if (onAddEvent) {
       onAddEvent(newEvent)
