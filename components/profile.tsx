@@ -4,7 +4,13 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { SelfTracking } from "./self-tracking"
 
 interface ProfileProps {
@@ -38,16 +44,18 @@ export function Profile({ user }: ProfileProps) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      window.open(TG_BOT_URL, "_blank")
+      // фоллбэк — просто открыть бота
+      window.open(TG_BOT_URL, "_blank", "noopener,noreferrer")
     }
   }
 
   const handleSupport = () => {
-    window.open(TG_SUPPORT, "_blank")
+    window.open(TG_SUPPORT, "_blank", "noopener,noreferrer")
   }
 
   return (
       <div className="p-4 space-y-4">
+        {/* Header */}
         <div className="text-center mb-6">
           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
             <span className="text-white text-2xl">👤</span>
@@ -122,7 +130,7 @@ export function Profile({ user }: ProfileProps) {
           </div>
         </Card>
 
-        {/* Settings */}
+        {/* Settings (пока статичные переключатели) */}
         <Card className="p-4">
           <h3 className="font-semibold text-primary mb-3">Настройки</h3>
           <div className="space-y-3">
