@@ -729,7 +729,9 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                       <h3 className="font-semibold" style={{ color: "#051F45" }}>
                         {direction.name}
                       </h3>
-                      <p className="text-xs" style={{ color: "#98A2B3" }}>{direction.code}</p>
+                      <p className="text-xs" style={{ color: "#98A2B3" }}>
+                        {direction.code}
+                      </p>
                       <div className="flex gap-4 mt-2 text-xs" style={{ color: "#98A2B3" }}>
                     <span>
                       Бюджет: <span style={{ color: "#051F45" }}>{direction.budgetPlaces}</span>
@@ -739,7 +741,9 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
                     </span>
                       </div>
                     </div>
-                    <div className="text-xl" style={{ color: "#98A2B3" }}>→</div>
+                    <div className="text-xl" style={{ color: "#98A2B3" }}>
+                      →
+                    </div>
                   </div>
                 </Card>
             ))}
@@ -804,4 +808,3 @@ const UniversitySelection = ({ onAddToCalendar }: UniversitySelectionProps) => {
 }
 
 export { UniversitySelection }
-

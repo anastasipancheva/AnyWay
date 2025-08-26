@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -49,12 +51,8 @@ function StepHeader({
 }) {
     return (
         <div className="text-center mb-6">
-            <h3 className="text-lg font-semibold text-primary text-[#051F45] tracking-tight mb-2">
-                {title}
-            </h3>
-            {subtitle ? (
-                <p className="text-xs text-[#98A2B3]">{subtitle}</p>
-            ) : null}
+            <h3 className="text-lg font-semibold text-primary text-[#051F45] tracking-tight mb-2">{title}</h3>
+            {subtitle ? <p className="text-xs text-[#98A2B3]">{subtitle}</p> : null}
         </div>
     )
 }
@@ -67,10 +65,7 @@ function Stepper({ step }: { step: 1 | 2 | 3 }) {
                 <span
                     key={i}
                     className={
-                        "h-1.5 w-8 rounded-full transition-all " +
-                        (i <= step
-                            ? "bg-[#051F45]"
-                            : "bg-[#98A2B3] bg-opacity-40")
+                        "h-1.5 w-8 rounded-full transition-all " + (i <= step ? "bg-[#051F45]" : "bg-[#98A2B3] bg-opacity-40")
                     }
                     aria-hidden
                 />
@@ -177,9 +172,7 @@ export function SelfTracking() {
 
     // Shared card shell with soft gradient and subtle border
     const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-        <Card
-            className="p-6 md:p-7 rounded-2xl border border-[#051F45]/10 shadow-sm bg-gradient-to-b from-white to-[#F6F7FA]"
-        >
+        <Card className="p-6 md:p-7 rounded-2xl border border-[#051F45]/10 shadow-sm bg-gradient-to-b from-white to-[#F6F7FA]">
             <div className="-mt-1 mb-4 flex items-center justify-between">
                 <div className="h-9 w-9 rounded-xl bg-[#F2C4CD] bg-opacity-60 flex items-center justify-center shadow-sm">
                     <span className="text-lg">🗓️</span>
@@ -206,7 +199,7 @@ export function SelfTracking() {
                         variant="outline"
                         size="sm"
                         onClick={resetTracking}
-                        className="text-primary text-[#051F45] border-[#051F45] hover:bg-[#051F45] hover:text-white transition-colors"
+                        className="text-primary text-[#051F45] border-[#051F45] hover:bg-[#051F45] hover:text-white transition-colors bg-transparent"
                     >
                         Заполнить заново
                     </Button>
@@ -248,13 +241,10 @@ export function SelfTracking() {
                             >
                                 {mood.emoji}
                             </div>
-                            <span className="text-xs font-medium text-primary text-[#051F45] opacity-90">
-        {mood.label}
-      </span>
+                            <span className="text-xs font-medium text-primary text-[#051F45] opacity-90">{mood.label}</span>
                         </button>
                     ))}
                 </div>
-
             </Shell>
         )
     }
@@ -267,7 +257,12 @@ export function SelfTracking() {
 
                 <div className="space-y-2 mb-4">
                     {energyOptions.map((option) => (
-                        <Tag key={option} label={option} active={selectedEnergy.includes(option)} onClick={() => handleEnergyToggle(option)} />
+                        <Tag
+                            key={option}
+                            label={option}
+                            active={selectedEnergy.includes(option)}
+                            onClick={() => handleEnergyToggle(option)}
+                        />
                     ))}
 
                     {!showCustomEnergy ? (

@@ -195,3 +195,12 @@
   background-color: #051f45 !important;
   color: #fff !important;
 }
+
+/* Added smooth transitions for toggles */
+button[class*="rounded-full"] {
+  transition: all 0.2s ease-in-out;
+}
+
+button[class*="rounded-full"]:active {
+  transform: scale(0.95);
+}
