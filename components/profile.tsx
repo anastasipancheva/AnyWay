@@ -30,9 +30,15 @@ export function Profile({ user }: ProfileProps) {
           <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
             <span className="text-white text-2xl">👤</span>
           </div>
-          <h2 className="text-xl font-bold text-primary">{user?.first_name || "Пользователь"}</h2>
+          <h2 className="text-xl font-bold text-primary">
+            {user?.first_name || "Пользователь"}
+          </h2>
           <p className="text-sm text-neutral-gray">@{user?.username || "username"}</p>
-          <Badge className="mt-2 bg-accent text-primary">Активный участник</Badge>
+          <Badge
+              className="mt-2 bg-[#051F45] text-white px-3 py-1 rounded-full"
+          >
+            Активный участник
+          </Badge>
         </div>
 
         {/* Self-Tracking */}
@@ -75,14 +81,22 @@ export function Profile({ user }: ProfileProps) {
                         achievement.earned ? "bg-accent/20" : "bg-neutral-gray/10"
                     }`}
                 >
-                  <div className={`text-2xl ${achievement.earned ? "" : "grayscale opacity-50"}`}>{achievement.icon}</div>
+                  <div className={`text-2xl ${achievement.earned ? "" : "grayscale opacity-50"}`}>
+                    {achievement.icon}
+                  </div>
                   <div className="flex-1">
-                    <h4 className={`font-medium ${achievement.earned ? "text-primary" : "text-neutral-gray"}`}>
+                    <h4
+                        className={`font-medium ${
+                            achievement.earned ? "text-primary" : "text-neutral-gray"
+                        }`}
+                    >
                       {achievement.title}
                     </h4>
                     <p className="text-xs text-neutral-gray">{achievement.description}</p>
                   </div>
-                  {achievement.earned && <Badge className="bg-primary text-white">✓</Badge>}
+                  {achievement.earned && (
+                      <Badge className="bg-primary text-white">✓</Badge>
+                  )}
                 </div>
             ))}
           </div>
@@ -127,7 +141,9 @@ export function Profile({ user }: ProfileProps) {
         </div>
 
         <div className="text-center pt-4">
-          <p className="text-xs text-neutral-gray">AnyWay v1.0 • Сделано с ❤️ в Сколково</p>
+          <p className="text-xs text-neutral-gray">
+            AnyWay v1.0 • Сделано с ❤️ в Сколково
+          </p>
         </div>
       </div>
   )
